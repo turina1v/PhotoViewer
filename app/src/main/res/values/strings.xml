@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">PhotoViewer</string>
+    <string name="app_name">NewWallPaper</string>
+    <string name="photo_content_description">Photo</string>
+    <string name="menu_search">Search</string>
 </resources>
