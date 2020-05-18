@@ -21,7 +21,7 @@ import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.presenter.PhotoListPresenter;
 
 @SuppressWarnings({"FieldCanBeLocal"})
-public class PhotoListActivity extends MvpAppCompatActivity implements PhotoListView {
+public class PhotoListActivity extends MvpAppCompatActivity implements PhotoListView, OnPhotoClickListener, SearchView.OnQueryTextListener {
     @InjectPresenter
     PhotoListPresenter presenter;
 
@@ -60,7 +60,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PhotoListAdapter(photos);
-        adapter.setOnPictureClickListener(presenter);
+        adapter.setOnPictureClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new GridItemDecoration(2, 16));
     }
@@ -75,6 +75,11 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREFERENCES_QUERY, query);
         editor.apply();
+    }
+
+    @Override
+    public void onPhotoClick(int position, String photoUrl) {
+        openDetailPhoto(position, photoUrl);
     }
 
     @Override
@@ -99,8 +104,19 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         inflater.inflate(R.menu.menu_toolbar, menu);
         MenuItem searchViewItem = menu.findItem(R.id.menu_search);
         SearchView searchView = (SearchView) searchViewItem.getActionView();
-        searchView.setOnQueryTextListener(presenter);
+        searchView.setOnQueryTextListener(this);
         return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        presenter.updatePhotoList(presenter.prepareQuery(query));
+        return false;
     }
 
     private void initToolbar() {
