@@ -2,4 +2,10 @@
     <string name="app_name">NewWallPaper</string>
     <string name="photo_content_description">Photo</string>
     <string name="menu_search">Search</string>
+    <string name="settings_orientation">Ориентация</string>
+    <string name="settings_orientation_vertical">Вертикальная</string>
+    <string name="settings_orientation_horizontal">Горизонтальная</string>
+    <string name="settings_orientation_any">Любая</string>
+    <string name="settings_category">Категория</string>
+    <string name="toolbar_settings">Настройки поиска</string>
 </resources>

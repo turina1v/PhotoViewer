@@ -36,8 +36,8 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
         subscriptions = new CompositeDisposable();
     }
 
-    public void downloadPhotosList(String query) {
-        Single<PhotoList> single = loader.requestServer(prepareQuery(query));
+    public void downloadPhotoList(String query, String orientation, String category) {
+        Single<PhotoList> single = loader.requestServer(prepareQuery(query), orientation, category);
         subscriptions.add(single.doOnSuccess(photoList -> clearDBTable())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,8 +50,8 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                         throwable -> Log.e(TAG, "onError", throwable)));
     }
 
-    public void updatePhotoList(String query) {
-        Single<PhotoList> single = loader.requestServer(prepareQuery(query));
+    public void updatePhotoList(String query, String orientation, String category) {
+        Single<PhotoList> single = loader.requestServer(prepareQuery(query), orientation, category);
         subscriptions.add(single.doOnSuccess(photoList -> clearDBTable())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

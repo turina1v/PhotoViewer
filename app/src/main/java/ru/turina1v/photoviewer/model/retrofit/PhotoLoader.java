@@ -30,7 +30,7 @@ public class PhotoLoader {
                 .create(PhotoApi.class);
     }
 
-    public Single<PhotoList> requestServer(String query) {
-        return api.loadPhotosList(apiKey, query, imageType).subscribeOn(Schedulers.io());
+    public Single<PhotoList> requestServer(String query, String orientation, String category) {
+        return api.loadPhotosList(apiKey, query, imageType, orientation, category).subscribeOn(Schedulers.io());
     }
 }

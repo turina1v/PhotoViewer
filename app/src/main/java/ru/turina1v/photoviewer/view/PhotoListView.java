@@ -10,5 +10,6 @@ public interface PhotoListView extends MvpView {
     void updatePhotoRecycler(List<Hit> photos);
     void saveQueryPreference(String query);
     void openDetailPhoto(int position, String photoUrl);
+    void openSearchSettings();
     void saveLoadFromDB();
 }

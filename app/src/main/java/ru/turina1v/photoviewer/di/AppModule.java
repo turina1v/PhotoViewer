@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.turina1v.photoviewer.model.PhotoPreferences;
 import ru.turina1v.photoviewer.model.database.PhotoDatabase;
 import ru.turina1v.photoviewer.model.retrofit.PhotoLoader;
 
@@ -37,5 +38,11 @@ public class AppModule {
     @Provides
     PhotoLoader providePhotoLoader(){
         return new PhotoLoader();
+    }
+
+    @Singleton
+    @Provides
+    PhotoPreferences providePhotoPreferences(Context context){
+        return new PhotoPreferences(context);
     }
 }

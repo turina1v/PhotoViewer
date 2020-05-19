@@ -7,5 +7,9 @@ import ru.turina1v.photoviewer.model.entity.PhotoList;
 
 public interface PhotoApi {
     @GET("api")
-    Single<PhotoList> loadPhotosList(@Query("key") String key, @Query("q") String query, @Query("image_type") String imageType);
+    Single<PhotoList> loadPhotosList(@Query("key") String key,
+                                     @Query("q") String query,
+                                     @Query("image_type") String imageType,
+                                     @Query("orientation") String orientation,
+                                     @Query("category") String category);
 }

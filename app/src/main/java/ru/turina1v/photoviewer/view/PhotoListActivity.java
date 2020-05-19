@@ -1,12 +1,13 @@
 package ru.turina1v.photoviewer.view;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -14,39 +15,50 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
+import ru.turina1v.photoviewer.App;
 import ru.turina1v.photoviewer.R;
+import ru.turina1v.photoviewer.model.PhotoPreferences;
 import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.presenter.PhotoListPresenter;
 
+import static ru.turina1v.photoviewer.model.PhotoPreferences.CATEGORY_ALL;
+import static ru.turina1v.photoviewer.model.PhotoPreferences.DEFAULT_ORIENTATION;
+import static ru.turina1v.photoviewer.model.PhotoPreferences.DEFAULT_QUERY;
+
 @SuppressWarnings({"FieldCanBeLocal"})
 public class PhotoListActivity extends MvpAppCompatActivity implements PhotoListView, OnPhotoClickListener, SearchView.OnQueryTextListener {
+    private final int requestCodeSettings = 111;
     @InjectPresenter
     PhotoListPresenter presenter;
+    @Inject
+    PhotoPreferences photoPreferences;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    MenuItem searchViewItem;
 
-    SharedPreferences preferences;
     PhotoListAdapter adapter;
-    private final String PREFERENCES_USER = "preferences_user";
-    private final String PREFERENCES_LOAD_FROM_DB = "preferences_load_from_db";
-    private final String PREFERENCES_UPDATE_TIMESTAMP = "preferences_update_timestamp";
-    private final String PREFERENCES_QUERY = "preferences_query";
-    private final String DEFAULT_QUERY = "cats";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_list);
+        App.getComponent().inject(this);
+        ButterKnife.bind(this);
 
         initToolbar();
-        preferences = getSharedPreferences(PREFERENCES_USER, MODE_PRIVATE);
-        boolean isLoadFromDB = preferences.getBoolean(PREFERENCES_LOAD_FROM_DB, false);
+        boolean isLoadFromDB = photoPreferences.getIsLoadFromDb();
         if (!isLoadFromDB) {
-            presenter.downloadPhotosList(DEFAULT_QUERY);
+            presenter.downloadPhotoList(DEFAULT_QUERY, DEFAULT_ORIENTATION, null);
         } else {
-            long updateTimestamp = preferences.getLong(PREFERENCES_UPDATE_TIMESTAMP, 0);
+            long updateTimestamp = photoPreferences.getUpdateTimestamp();
             if (presenter.isUpdateNeeded(updateTimestamp)) {
-                presenter.downloadPhotosList(preferences.getString(PREFERENCES_QUERY, DEFAULT_QUERY));
+                presenter.downloadPhotoList(photoPreferences.getQuery(), photoPreferences.getOrientation(), photoPreferences.getCategory());
             } else {
                 presenter.getPhotosFromDB();
             }
@@ -54,8 +66,26 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     }
 
     @Override
+    protected void onResume() {
+        invalidateOptionsMenu();
+        super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == requestCodeSettings && resultCode == Activity.RESULT_OK){
+            if (!photoPreferences.getCategory().equals(CATEGORY_ALL)){
+                photoPreferences.saveQuery("");
+            }
+            presenter.updatePhotoList(photoPreferences.getQuery(),
+                    photoPreferences.getOrientation(), photoPreferences.getCategory());
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     public void initPhotoRecycler(List<Hit> photos) {
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -72,9 +102,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
 
     @Override
     public void saveQueryPreference(String query) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(PREFERENCES_QUERY, query);
-        editor.apply();
+        photoPreferences.saveQuery(query);
     }
 
     @Override
@@ -91,20 +119,29 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     }
 
     @Override
+    public void openSearchSettings(){
+        Intent intent = new Intent(PhotoListActivity.this, SearchSettingsActivity.class);
+        startActivityForResult(intent, requestCodeSettings);
+    }
+
+    @Override
     public void saveLoadFromDB() {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(PREFERENCES_LOAD_FROM_DB, true);
-        editor.putLong(PREFERENCES_UPDATE_TIMESTAMP, presenter.getUpdateTimestamp(System.currentTimeMillis()));
-        editor.apply();
+        photoPreferences.saveIsLoadFromDb(true);
+        photoPreferences.saveUpdateTimestamp(presenter.getUpdateTimestamp(System.currentTimeMillis()));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_toolbar, menu);
-        MenuItem searchViewItem = menu.findItem(R.id.menu_search);
+        searchViewItem = menu.findItem(R.id.menu_search);
         SearchView searchView = (SearchView) searchViewItem.getActionView();
         searchView.setOnQueryTextListener(this);
+        MenuItem filterItem = menu.findItem(R.id.menu_filter);
+        filterItem.setOnMenuItemClickListener(item -> {
+            openSearchSettings();
+            return false;
+        });
         return true;
     }
 
@@ -115,7 +152,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        presenter.updatePhotoList(presenter.prepareQuery(query));
+        presenter.updatePhotoList(query, photoPreferences.getOrientation(), photoPreferences.getCategory());
         return false;
     }
 

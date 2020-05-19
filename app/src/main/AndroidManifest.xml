@@ -23,6 +23,10 @@
         <activity android:name=".view.PhotoDetailActivity">
 
         </activity>
+
+        <activity android:name=".view.SearchSettingsActivity">
+
+        </activity>
     </application>
 
 </manifest>
