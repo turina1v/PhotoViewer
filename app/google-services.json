@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "200303992179",
+    "firebase_url": "https://photoviewer-8a475.firebaseio.com",
+    "project_id": "photoviewer-8a475",
+    "storage_bucket": "photoviewer-8a475.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200303992179:android:0f644d0f88930c3c3b3906",
+        "android_client_info": {
+          "package_name": "ru.turina1v.photoviewer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200303992179-g96k4dgtvoqjb7jah5k4c1d2ah16dv2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP4y76jiaF7pVtQJF8k_A4KdWmEikeWAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200303992179-g96k4dgtvoqjb7jah5k4c1d2ah16dv2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
