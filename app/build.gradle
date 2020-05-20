@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -6,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "ru.turina1v.photoviewer"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -70,4 +72,10 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
 
     implementation'com.google.android.material:material:1.0.0'
+
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.karumi:dexter:6.1.2'
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 }
