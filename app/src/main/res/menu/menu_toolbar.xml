@@ -19,4 +19,12 @@
         android:visible="true"
         tools:visible="true"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_info"
+        android:icon="@drawable/ic_info"
+        android:title="@string/menu_search"
+        android:visible="true"
+        tools:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>

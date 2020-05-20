@@ -10,4 +10,9 @@
     <string name="toolbar_settings">Настройки поиска</string>
     <string name="save_to_gallery">Сохранить на устройство</string>
     <string name="set_wallpaper">Установить обои</string>
+    <string name="toolbar_about_app">О приложении</string>
+    <string name="about_app_pixabay">Приложение работает на базе сервиса pixabay.com</string>
+    <string name="about_app_developer">Разработчик: Валентина Тюрина</string>
+    <string name="about_app_email">E-mail: turina.valentina@gmail.com</string>
+
 </resources>

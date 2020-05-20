@@ -32,6 +32,10 @@
         <activity android:name=".view.SearchSettingsActivity">
 
         </activity>
+
+        <activity android:name=".view.AboutAppActivity">
+
+        </activity>
     </application>
 
 </manifest>

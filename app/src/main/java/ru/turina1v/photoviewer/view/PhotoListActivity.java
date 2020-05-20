@@ -125,6 +125,11 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     }
 
     @Override
+    public void openAppInfo() {
+        startActivity(new Intent(PhotoListActivity.this, AboutAppActivity.class));
+    }
+
+    @Override
     public void saveLoadFromDB() {
         photoPreferences.saveIsLoadFromDb(true);
         photoPreferences.saveUpdateTimestamp(presenter.getUpdateTimestamp(System.currentTimeMillis()));
@@ -140,6 +145,11 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         MenuItem filterItem = menu.findItem(R.id.menu_filter);
         filterItem.setOnMenuItemClickListener(item -> {
             openSearchSettings();
+            return false;
+        });
+        MenuItem infoItem = menu.findItem(R.id.menu_info);
+        infoItem.setOnMenuItemClickListener(item -> {
+            openAppInfo();
             return false;
         });
         return true;
