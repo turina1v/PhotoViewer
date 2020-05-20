@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.github.chrisbanes.photoview.PhotoView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -61,6 +63,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_detail);
+        initToolbar();
         ButterKnife.bind(this);
         Intent intent = getIntent();
         int picturePosition = intent.getIntExtra(EXTRA_POSITION, -1);
@@ -136,5 +139,20 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         if (!subscriptions.isDisposed()){
             subscriptions.dispose();
         }
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

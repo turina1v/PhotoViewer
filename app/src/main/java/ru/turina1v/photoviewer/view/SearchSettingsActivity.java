@@ -8,6 +8,8 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -49,6 +51,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity {
         setContentView(R.layout.activity_search_settings);
         App.getComponent().inject(this);
         ButterKnife.bind(this);
+        initToolbar();
         setCheckedOrientation();
         initCategorySpinner();
     }
@@ -113,5 +116,21 @@ public class SearchSettingsActivity extends MvpAppCompatActivity {
 
             }
         });
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        setResult(Activity.RESULT_OK);
+        finish();
+        return true;
     }
 }
