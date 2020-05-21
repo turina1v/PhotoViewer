@@ -8,12 +8,14 @@
     <string name="settings_orientation_any">Любая</string>
     <string name="settings_category">Категория</string>
     <string name="toolbar_settings">Настройки поиска</string>
+    <string name="toolbar_about_app">О приложении</string>
     <string name="save_to_gallery">Сохранить на устройство</string>
     <string name="set_wallpaper">Установить обои</string>
-    <string name="toolbar_about_app">О приложении</string>
     <string name="about_app_pixabay">Приложение работает на базе сервиса pixabay.com</string>
     <string name="about_app_developer">Разработчик: Валентина Тюрина</string>
     <string name="about_app_email">E-mail: turina.valentina@gmail.com</string>
     <string name="load_info_nothing_found">По вашему запросу ничего не найдено. \nПопробуйте изменить параметры поиска.</string>
-
+    <string name="load_info_image_loading">Загрузка изображения…</string>
+    <string name="toast_saved_to_gallery">Изображение сохранено в галерее</string>
+    <string name="toast_wallpaper_set">Обои установлены</string>
 </resources>

@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -36,14 +37,13 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     public static final String EXTRA_POSITION = "ru.turina1v.photoviewer.EXTRA_POSITION";
     public static final String EXTRA_PHOTO_URL = "ru.turina1v.photoviewer.EXTRA_PHOTO_URL";
 
-    @InjectPresenter
-    PhotoDetailPresenter presenter;
-    @BindView(R.id.photo_detail_view)
-    PhotoView photoDetailView;
-    @BindView(R.id.button_save)
-    Button saveButton;
-    @BindView(R.id.button_set_wallpaper)
-    Button setWallpaperButton;
+    @InjectPresenter PhotoDetailPresenter presenter;
+
+    @BindView(R.id.photo_detail_view) PhotoView photoDetailView;
+    @BindView(R.id.button_save) Button saveButton;
+    @BindView(R.id.button_set_wallpaper) Button setWallpaperButton;
+    @BindView(R.id.layout_loader) LinearLayout loaderLayout;
+
     private CompositeDisposable subscriptions = new CompositeDisposable();
     private String photoUrl;
 
@@ -76,6 +76,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         PicassoLoader.loadImage(photoDetailView, photoUrl, new Callback() {
             @Override
             public void onSuccess() {
+                loaderLayout.setVisibility(View.GONE);
                 saveButton.setVisibility(View.VISIBLE);
                 setWallpaperButton.setVisibility(View.VISIBLE);
             }
@@ -91,7 +92,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         subscriptions.add(PicassoLoader.downloadImage(photoUrl).subscribe(
                 bitmap -> {
                     MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, String.valueOf(System.currentTimeMillis()), "");
-                    Toast.makeText(this, "Изображение сохранено в галерею", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.toast_saved_to_gallery, Toast.LENGTH_LONG).show();
                 },
                 throwable -> Log.e("", "saveToGallery", throwable)
         ));
@@ -103,7 +104,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         subscriptions.add(PicassoLoader.downloadImage(photoUrl).subscribe(
                 bitmap -> {
                     wm.setBitmap(bitmap);
-                    Toast.makeText(this, "Обои установлены", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.toast_wallpaper_set, Toast.LENGTH_LONG).show();
                 },
                 throwable -> Log.e("", "saveToGallery", throwable)
         ));
