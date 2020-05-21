@@ -14,5 +14,6 @@
     <string name="about_app_pixabay">Приложение работает на базе сервиса pixabay.com</string>
     <string name="about_app_developer">Разработчик: Валентина Тюрина</string>
     <string name="about_app_email">E-mail: turina.valentina@gmail.com</string>
+    <string name="load_info_nothing_found">По вашему запросу ничего не найдено. \nПопробуйте изменить параметры поиска.</string>
 
 </resources>

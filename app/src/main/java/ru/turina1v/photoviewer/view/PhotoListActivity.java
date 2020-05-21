@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -34,12 +36,16 @@ import static ru.turina1v.photoviewer.model.PhotoPreferences.DEFAULT_QUERY;
 @SuppressWarnings({"FieldCanBeLocal"})
 public class PhotoListActivity extends MvpAppCompatActivity implements PhotoListView, OnPhotoClickListener, SearchView.OnQueryTextListener {
     private final int requestCodeSettings = 111;
+
     @InjectPresenter
     PhotoListPresenter presenter;
     @Inject
     PhotoPreferences photoPreferences;
+
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.text_load_info)
+    TextView loadInfoText;
     MenuItem searchViewItem;
 
     PhotoListAdapter adapter;
@@ -50,8 +56,8 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         setContentView(R.layout.activity_photo_list);
         App.getComponent().inject(this);
         ButterKnife.bind(this);
-
         initToolbar();
+
         boolean isLoadFromDB = photoPreferences.getIsLoadFromDb();
         if (!isLoadFromDB) {
             presenter.downloadPhotoList(DEFAULT_QUERY, DEFAULT_ORIENTATION, null);
@@ -68,13 +74,14 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     @Override
     protected void onResume() {
         invalidateOptionsMenu();
+        recyclerView.scrollToPosition(0);
         super.onResume();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == requestCodeSettings && resultCode == Activity.RESULT_OK){
-            if (!photoPreferences.getCategory().equals(CATEGORY_ALL)){
+        if (requestCode == requestCodeSettings && resultCode == Activity.RESULT_OK) {
+            if (!photoPreferences.getCategory().equals(CATEGORY_ALL)) {
                 photoPreferences.saveQuery("");
             }
             presenter.updatePhotoList(photoPreferences.getQuery(),
@@ -86,18 +93,30 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
 
     @Override
     public void initPhotoRecycler(List<Hit> photos) {
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new PhotoListAdapter(photos);
-        adapter.setOnPictureClickListener(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new GridItemDecoration(2, 16));
+        if (photos.size() == 0) {
+            presenter.downloadPhotoList(DEFAULT_QUERY, DEFAULT_ORIENTATION, null);
+        } else {
+            recyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new PhotoListAdapter(photos);
+            adapter.setOnPictureClickListener(this);
+            recyclerView.setAdapter(adapter);
+            recyclerView.addItemDecoration(new GridItemDecoration(2, 16));
+        }
     }
 
     @Override
     public void updatePhotoRecycler(List<Hit> photos) {
-        adapter.setPhotosList(photos);
+        if (photos.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            loadInfoText.setVisibility(View.VISIBLE);
+            loadInfoText.setText(R.string.load_info_nothing_found);
+        } else {
+            loadInfoText.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            adapter.setPhotosList(photos);
+        }
     }
 
     @Override
@@ -119,7 +138,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     }
 
     @Override
-    public void openSearchSettings(){
+    public void openSearchSettings() {
         Intent intent = new Intent(PhotoListActivity.this, SearchSettingsActivity.class);
         startActivityForResult(intent, requestCodeSettings);
     }

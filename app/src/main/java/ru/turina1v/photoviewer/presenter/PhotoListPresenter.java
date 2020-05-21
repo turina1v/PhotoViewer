@@ -23,10 +23,8 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
     private static final String TAG = "PicturesListPresenter";
     private final long FULL_DAY_MILLIS = 86_400_000; //24 часа в милисекундах, срок хранения ссылок в базе
 
-    @Inject
-    PhotoDatabase database;
-    @Inject
-    PhotoLoader loader;
+    @Inject PhotoDatabase database;
+    @Inject PhotoLoader loader;
     private PhotoDao photoDao;
     private CompositeDisposable subscriptions;
 
@@ -97,7 +95,7 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
         return currentTimestamp + FULL_DAY_MILLIS;
     }
 
-    public String prepareQuery(String query) {
+    private String prepareQuery(String query) {
         return query.replace(" ", "+");
     }
 
