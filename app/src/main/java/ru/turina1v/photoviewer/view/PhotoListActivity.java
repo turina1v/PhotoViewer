@@ -7,8 +7,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -30,11 +33,8 @@ import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.presenter.PhotoListPresenter;
 
 import static ru.turina1v.photoviewer.model.PhotoPreferences.CATEGORY_ALL;
-import static ru.turina1v.photoviewer.model.PhotoPreferences.DEFAULT_ORIENTATION;
-import static ru.turina1v.photoviewer.model.PhotoPreferences.DEFAULT_QUERY;
 
-@SuppressWarnings({"FieldCanBeLocal"})
-public class PhotoListActivity extends MvpAppCompatActivity implements PhotoListView, OnPhotoClickListener, SearchView.OnQueryTextListener {
+public class PhotoListActivity extends MvpAppCompatActivity implements PhotoListView, OnPhotoClickListener {
     private final int requestCodeSettings = 111;
 
     @InjectPresenter
@@ -46,7 +46,6 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     RecyclerView recyclerView;
     @BindView(R.id.text_load_info)
     TextView loadInfoText;
-    MenuItem searchViewItem;
 
     PhotoListAdapter adapter;
 
@@ -57,34 +56,31 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         App.getComponent().inject(this);
         ButterKnife.bind(this);
         initToolbar();
-
-        boolean isLoadFromDB = photoPreferences.getIsLoadFromDb();
-        if (!isLoadFromDB) {
-            presenter.downloadPhotoList(DEFAULT_QUERY, DEFAULT_ORIENTATION, null);
-        } else {
-            long updateTimestamp = photoPreferences.getUpdateTimestamp();
-            if (presenter.isUpdateNeeded(updateTimestamp)) {
-                presenter.downloadPhotoList(photoPreferences.getQuery(), photoPreferences.getOrientation(), photoPreferences.getCategory());
-            } else {
-                presenter.getPhotosFromDB();
-            }
-        }
+        initPhotoRecycler();
+        presenter.downloadPhotoList(null, null, null);
     }
 
     @Override
     protected void onResume() {
         invalidateOptionsMenu();
-        recyclerView.scrollToPosition(0);
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        photoPreferences.clearAll();
+        super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == requestCodeSettings && resultCode == Activity.RESULT_OK) {
             if (!photoPreferences.getCategory().equals(CATEGORY_ALL)) {
-                photoPreferences.saveQuery("");
+                photoPreferences.clearQuery();
             }
-            presenter.updatePhotoList(photoPreferences.getQuery(),
+            adapter.clearPhotosList();
+            presenter.resetPage();
+            presenter.downloadPhotoList(photoPreferences.getQuery(),
                     photoPreferences.getOrientation(), photoPreferences.getCategory());
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -92,18 +88,72 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     }
 
     @Override
-    public void initPhotoRecycler(List<Hit> photos) {
-        if (photos.size() == 0) {
-            presenter.downloadPhotoList(DEFAULT_QUERY, DEFAULT_ORIENTATION, null);
-        } else {
-            recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
-            recyclerView.setLayoutManager(layoutManager);
-            adapter = new PhotoListAdapter(photos);
-            adapter.setOnPictureClickListener(this);
-            recyclerView.setAdapter(adapter);
-            recyclerView.addItemDecoration(new GridItemDecoration(2, 16));
-        }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_toolbar, menu);
+
+        MenuItem searchViewItem = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView) searchViewItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.clearPhotosList();
+                photoPreferences.saveQuery(query);
+                presenter.resetPage();
+                presenter.downloadPhotoList(query, photoPreferences.getOrientation(), photoPreferences.getCategory());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
+        EditText et = searchView.findViewById(R.id.search_src_text);
+        closeButton.setOnClickListener(v -> {
+            String query = et.getText().toString();
+            searchView.onActionViewCollapsed();
+            searchViewItem.collapseActionView();
+            if (!"".equals(query)) {
+                et.setText("");
+                photoPreferences.clearQuery();
+                presenter.downloadPhotoList(null, photoPreferences.getOrientation(), photoPreferences.getCategory());
+            }
+        });
+
+        MenuItem filterItem = menu.findItem(R.id.menu_filter);
+        filterItem.setOnMenuItemClickListener(item -> {
+            openSearchSettings();
+            return false;
+        });
+        MenuItem infoItem = menu.findItem(R.id.menu_info);
+        infoItem.setOnMenuItemClickListener(item -> {
+            openAppInfo();
+            return false;
+        });
+        return true;
+    }
+
+    @Override
+    public void initPhotoRecycler() {
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new PhotoListAdapter();
+        adapter.setOnPictureClickListener(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new GridItemDecoration(2, 16));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1)) {
+                    presenter.appendPhotoList(photoPreferences.getQuery(), photoPreferences.getOrientation(), photoPreferences.getCategory());
+                }
+            }
+        });
     }
 
     @Override
@@ -120,8 +170,8 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     }
 
     @Override
-    public void saveQueryPreference(String query) {
-        photoPreferences.saveQuery(query);
+    public void appendPhotoRecycler(List<Hit> photos) {
+        adapter.addToPhotosList(photos);
     }
 
     @Override
@@ -139,50 +189,12 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
 
     @Override
     public void openSearchSettings() {
-        Intent intent = new Intent(PhotoListActivity.this, SearchSettingsActivity.class);
-        startActivityForResult(intent, requestCodeSettings);
+        startActivityForResult(new Intent(PhotoListActivity.this, SearchSettingsActivity.class), requestCodeSettings);
     }
 
     @Override
     public void openAppInfo() {
         startActivity(new Intent(PhotoListActivity.this, AboutAppActivity.class));
-    }
-
-    @Override
-    public void saveLoadFromDB() {
-        photoPreferences.saveIsLoadFromDb(true);
-        photoPreferences.saveUpdateTimestamp(presenter.getUpdateTimestamp(System.currentTimeMillis()));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_toolbar, menu);
-        searchViewItem = menu.findItem(R.id.menu_search);
-        SearchView searchView = (SearchView) searchViewItem.getActionView();
-        searchView.setOnQueryTextListener(this);
-        MenuItem filterItem = menu.findItem(R.id.menu_filter);
-        filterItem.setOnMenuItemClickListener(item -> {
-            openSearchSettings();
-            return false;
-        });
-        MenuItem infoItem = menu.findItem(R.id.menu_info);
-        infoItem.setOnMenuItemClickListener(item -> {
-            openAppInfo();
-            return false;
-        });
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        presenter.updatePhotoList(query, photoPreferences.getOrientation(), photoPreferences.getCategory());
-        return false;
     }
 
     private void initToolbar() {

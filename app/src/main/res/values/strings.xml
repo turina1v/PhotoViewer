@@ -18,4 +18,6 @@
     <string name="load_info_image_loading">Загрузка изображения…</string>
     <string name="toast_saved_to_gallery">Изображение сохранено в галерее</string>
     <string name="toast_wallpaper_set">Обои установлены</string>
+    <string name="menu_last_viewed">Последние просмотренные</string>
+    <string name="menu_about">О приложении</string>
 </resources>

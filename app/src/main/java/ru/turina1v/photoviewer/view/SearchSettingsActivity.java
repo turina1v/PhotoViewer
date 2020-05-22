@@ -81,6 +81,10 @@ public class SearchSettingsActivity extends MvpAppCompatActivity {
 
     private void setCheckedOrientation() {
         String orientation = photoPreferences.getOrientation();
+        if (orientation == null) {
+            orientationAllBtn.setChecked(true);
+            return;
+        }
         switch (orientation) {
             case (ORIENTATION_VERTICAL):
                 orientationVerticalBtn.setChecked(true);

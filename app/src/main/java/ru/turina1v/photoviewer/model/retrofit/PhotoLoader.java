@@ -15,7 +15,7 @@ public class PhotoLoader {
     private final String baseUrl = "https://pixabay.com";
     private final String apiKey = "16316299-ba7e12baf00b76dee8fff44c9";
     private final String imageType = "photo";
-    private final String perPage = "50";
+    private final String perPage = "200";
     private PhotoApi api;
 
     public PhotoLoader() {
@@ -31,7 +31,7 @@ public class PhotoLoader {
                 .create(PhotoApi.class);
     }
 
-    public Single<PhotoList> requestServer(String query, String orientation, String category) {
-        return api.loadPhotosList(apiKey, query, imageType, orientation, category, perPage).subscribeOn(Schedulers.io());
+    public Single<PhotoList> requestServer(String query, String orientation, String category, String page) {
+        return api.loadPhotosList(apiKey, query, imageType, orientation, category, perPage, page).subscribeOn(Schedulers.io());
     }
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.turina1v.photoviewer.R;
@@ -28,8 +29,8 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.Imag
         }
     }
 
-    PhotoListAdapter(List<Hit> photos) {
-        this.photos = photos;
+    PhotoListAdapter() {
+        this.photos = new ArrayList<>();
     }
 
     @NonNull
@@ -57,6 +58,16 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.Imag
 
     void setPhotosList(List<Hit> photos) {
         this.photos = photos;
+        notifyDataSetChanged();
+    }
+
+    void addToPhotosList(List<Hit> photos) {
+        this.photos.addAll(photos);
+        notifyDataSetChanged();
+    }
+
+    void clearPhotosList() {
+        photos.clear();
         notifyDataSetChanged();
     }
 }
