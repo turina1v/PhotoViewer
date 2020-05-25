@@ -17,7 +17,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
-        <activity android:name=".view.PhotoListActivity">
+        <activity android:name=".view.photolist.PhotoListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,11 +25,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.PhotoDetailActivity">
+        <activity android:name=".view.photodetail.PhotoDetailActivity">
 
         </activity>
 
-        <activity android:name=".view.SearchSettingsActivity">
+        <activity android:name=".view.searchsettings.SearchSettingsActivity">
+
+        </activity>
+
+        <activity android:name=".view.clickedphotos.ClickedPhotosActivity">
 
         </activity>
 

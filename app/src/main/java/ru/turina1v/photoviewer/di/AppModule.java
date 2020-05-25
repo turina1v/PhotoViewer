@@ -25,7 +25,9 @@ public class AppModule {
     @Provides
     PhotoDatabase provideDatabase(Context context){
         return Room.databaseBuilder(context,
-                PhotoDatabase.class, "photo_database").build();
+                PhotoDatabase.class, "photo_database")
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
     @Singleton

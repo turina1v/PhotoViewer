@@ -1,4 +1,4 @@
-package ru.turina1v.photoviewer.view;
+package ru.turina1v.photoviewer.view.photolist;
 
 import java.util.List;
 
@@ -12,9 +12,11 @@ public interface PhotoListView extends MvpView {
 
     void appendPhotoRecycler(List<Hit> photos);
 
-    void openDetailPhoto(int position, String photoUrl);
+    void openDetailPhoto(Hit photo);
 
     void openSearchSettings();
+
+    void openLastClicked();
 
     void openAppInfo();
 }

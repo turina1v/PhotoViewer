@@ -11,7 +11,7 @@ import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.turina1v.photoviewer.App;
 import ru.turina1v.photoviewer.model.retrofit.PhotoLoader;
-import ru.turina1v.photoviewer.view.PhotoListView;
+import ru.turina1v.photoviewer.view.photolist.PhotoListView;
 
 @InjectViewState
 public class PhotoListPresenter extends MvpPresenter<PhotoListView> {

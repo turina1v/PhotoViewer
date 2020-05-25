@@ -1,4 +1,4 @@
-package ru.turina1v.photoviewer.view;
+package ru.turina1v.photoviewer.view.photolist;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,6 +31,10 @@ import ru.turina1v.photoviewer.R;
 import ru.turina1v.photoviewer.model.PhotoPreferences;
 import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.presenter.PhotoListPresenter;
+import ru.turina1v.photoviewer.view.AboutAppActivity;
+import ru.turina1v.photoviewer.view.clickedphotos.ClickedPhotosActivity;
+import ru.turina1v.photoviewer.view.photodetail.PhotoDetailActivity;
+import ru.turina1v.photoviewer.view.searchsettings.SearchSettingsActivity;
 
 import static ru.turina1v.photoviewer.model.PhotoPreferences.CATEGORY_ALL;
 
@@ -128,6 +132,13 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
             openSearchSettings();
             return false;
         });
+
+        MenuItem lastClickedItem = menu.findItem(R.id.menu_last_clicked);
+        lastClickedItem.setOnMenuItemClickListener(item -> {
+            openLastClicked();
+            return false;
+        });
+
         MenuItem infoItem = menu.findItem(R.id.menu_info);
         infoItem.setOnMenuItemClickListener(item -> {
             openAppInfo();
@@ -175,21 +186,25 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     }
 
     @Override
-    public void onPhotoClick(int position, String photoUrl) {
-        openDetailPhoto(position, photoUrl);
+    public void onPhotoClick(Hit photo) {
+        openDetailPhoto(photo);
     }
 
     @Override
-    public void openDetailPhoto(int position, String photoUrl) {
+    public void openDetailPhoto(Hit photo) {
         Intent intent = new Intent(PhotoListActivity.this, PhotoDetailActivity.class);
-        intent.putExtra(PhotoDetailActivity.EXTRA_POSITION, position);
-        intent.putExtra(PhotoDetailActivity.EXTRA_PHOTO_URL, photoUrl);
+        intent.putExtra(PhotoDetailActivity.EXTRA_PHOTO, photo);
         startActivity(intent);
     }
 
     @Override
     public void openSearchSettings() {
         startActivityForResult(new Intent(PhotoListActivity.this, SearchSettingsActivity.class), requestCodeSettings);
+    }
+
+    @Override
+    public void openLastClicked() {
+        startActivity(new Intent(PhotoListActivity.this, ClickedPhotosActivity.class));
     }
 
     @Override

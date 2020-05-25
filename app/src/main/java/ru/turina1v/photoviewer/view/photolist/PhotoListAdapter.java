@@ -1,4 +1,4 @@
-package ru.turina1v.photoviewer.view;
+package ru.turina1v.photoviewer.view.photolist;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +29,12 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.Imag
         }
     }
 
-    PhotoListAdapter() {
+    public PhotoListAdapter() {
         this.photos = new ArrayList<>();
+    }
+
+    public PhotoListAdapter(List<Hit> photos) {
+        this.photos = photos;
     }
 
     @NonNull
@@ -44,7 +48,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.Imag
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         PicassoLoader.loadImage(holder.imageView, photos.get(position).getWebFormatUrl());
-        holder.imageView.setOnClickListener(v -> listener.onPhotoClick(position, photos.get(position).getLargeImageUrl()));
+        holder.imageView.setOnClickListener(v -> listener.onPhotoClick(photos.get(position)));
     }
 
     @Override
@@ -52,11 +56,11 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.Imag
         return photos.size();
     }
 
-    void setOnPictureClickListener(OnPhotoClickListener listener) {
+    public void setOnPictureClickListener(OnPhotoClickListener listener) {
         this.listener = listener;
     }
 
-    void setPhotosList(List<Hit> photos) {
+    public void setPhotosList(List<Hit> photos) {
         this.photos = photos;
         notifyDataSetChanged();
     }

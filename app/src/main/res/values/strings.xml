@@ -20,4 +20,5 @@
     <string name="toast_wallpaper_set">Обои установлены</string>
     <string name="menu_last_viewed">Последние просмотренные</string>
     <string name="menu_about">О приложении</string>
+    <string name="toolbar_clicked_photos">Последние просмотренные</string>
 </resources>

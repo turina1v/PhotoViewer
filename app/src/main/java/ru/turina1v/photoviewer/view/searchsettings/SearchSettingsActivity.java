@@ -1,4 +1,4 @@
-package ru.turina1v.photoviewer.view;
+package ru.turina1v.photoviewer.view.searchsettings;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -27,6 +27,7 @@ import ru.turina1v.photoviewer.R;
 import ru.turina1v.photoviewer.model.Category;
 import ru.turina1v.photoviewer.model.JsonUtils;
 import ru.turina1v.photoviewer.model.PhotoPreferences;
+import ru.turina1v.photoviewer.view.searchsettings.CategoryAdapter;
 
 import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_ALL;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_HORIZONTAL;

@@ -1,7 +1,9 @@
 package ru.turina1v.photoviewer.model.database;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -14,8 +16,11 @@ public interface PhotoDao {
     @Query("SELECT * FROM table_photos")
     Single<List<Hit>> getAll();
 
-    @Insert
-    Single<List<Long>> insertList(List<Hit> photos);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Single<Long> insertPhoto(Hit photo);
+
+    @Delete
+    Single<Integer> deleteExpired(List<Hit> expiredPhotos);
 
     @Query("DELETE FROM table_photos")
     Single<Integer> deleteAll();

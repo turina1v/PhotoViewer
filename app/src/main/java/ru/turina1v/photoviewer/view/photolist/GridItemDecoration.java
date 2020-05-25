@@ -1,4 +1,4 @@
-package ru.turina1v.photoviewer.view;
+package ru.turina1v.photoviewer.view.photolist;
 
 import android.graphics.Rect;
 import android.view.View;
@@ -10,7 +10,7 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
     private int spanCount;
     private int spacing;
 
-    GridItemDecoration(int spanCount, int spacing) {
+    public GridItemDecoration(int spanCount, int spacing) {
         this.spanCount = spanCount;
         this.spacing = spacing;
     }

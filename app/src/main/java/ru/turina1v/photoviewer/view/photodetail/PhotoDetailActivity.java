@@ -1,4 +1,4 @@
-package ru.turina1v.photoviewer.view;
+package ru.turina1v.photoviewer.view.photodetail;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -31,11 +31,11 @@ import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 import ru.turina1v.photoviewer.R;
 import ru.turina1v.photoviewer.model.PicassoLoader;
+import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.presenter.PhotoDetailPresenter;
 
 public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDetailView {
-    public static final String EXTRA_POSITION = "ru.turina1v.photoviewer.EXTRA_POSITION";
-    public static final String EXTRA_PHOTO_URL = "ru.turina1v.photoviewer.EXTRA_PHOTO_URL";
+    public static final String EXTRA_PHOTO = "ru.turina1v.photoviewer.EXTRA_PHOTO";
 
     @InjectPresenter PhotoDetailPresenter presenter;
 
@@ -45,7 +45,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     @BindView(R.id.layout_loader) LinearLayout loaderLayout;
 
     private CompositeDisposable subscriptions = new CompositeDisposable();
-    private String photoUrl;
+    private String largePhotoUrl;
 
     @OnClick({R.id.button_save, R.id.button_set_wallpaper})
     public void onClickButton(View view) {
@@ -66,9 +66,10 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         initToolbar();
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        int picturePosition = intent.getIntExtra(EXTRA_POSITION, -1);
-        photoUrl = intent.getStringExtra(EXTRA_PHOTO_URL);
-        presenter.showDetailPhoto(picturePosition, photoUrl);
+        Hit photo = intent.getParcelableExtra(EXTRA_PHOTO);
+        largePhotoUrl = photo.getLargeImageUrl();
+        presenter.showDetailPhoto(largePhotoUrl);
+        presenter.savePhotoToDb(photo);
     }
 
     @Override
@@ -89,7 +90,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     }
 
     private void saveToGallery() {
-        subscriptions.add(PicassoLoader.downloadImage(photoUrl).subscribe(
+        subscriptions.add(PicassoLoader.downloadImage(largePhotoUrl).subscribe(
                 bitmap -> {
                     MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, String.valueOf(System.currentTimeMillis()), "");
                     Toast.makeText(this, R.string.toast_saved_to_gallery, Toast.LENGTH_LONG).show();
@@ -101,7 +102,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     @SuppressLint("MissingPermission")
     private void setWallpaper(){
         WallpaperManager wm = WallpaperManager.getInstance(this);
-        subscriptions.add(PicassoLoader.downloadImage(photoUrl).subscribe(
+        subscriptions.add(PicassoLoader.downloadImage(largePhotoUrl).subscribe(
                 bitmap -> {
                     wm.setBitmap(bitmap);
                     Toast.makeText(this, R.string.toast_wallpaper_set, Toast.LENGTH_LONG).show();

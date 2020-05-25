@@ -1,4 +1,4 @@
-package ru.turina1v.photoviewer.view;
+package ru.turina1v.photoviewer.view.searchsettings;
 
 import android.content.Context;
 import android.view.LayoutInflater;
