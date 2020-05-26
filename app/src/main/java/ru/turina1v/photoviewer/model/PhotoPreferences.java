@@ -37,6 +37,8 @@ public class PhotoPreferences {
     private String[] colors = {COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_GREEN, COLOR_BLUE_LIGHT, COLOR_BLUE_DARK, COLOR_PURPLE,
     COLOR_PINK, COLOR_WHITE, COLOR_GRAY, COLOR_BLACK, COLOR_BROWN, COLOR_TRANSPARENT, COLOR_GRAYSCALE};
 
+    public static final String PREFERENCES_EDITORS_CHOICE = "preferences_editors_choice";
+
     private SharedPreferences preferences;
 
     public PhotoPreferences(Context context) {
@@ -122,6 +124,24 @@ public class PhotoPreferences {
         }
     }
 
+    public void saveEditorsChoice(boolean isEditorsChoice) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PREFERENCES_EDITORS_CHOICE, isEditorsChoice);
+        editor.apply();
+    }
+
+    public boolean isEditorsChoice() {
+        return preferences.getBoolean(PREFERENCES_EDITORS_CHOICE, false);
+    }
+
+    public String getEditorsChoiceQuery(){
+        if (isEditorsChoice()){
+            return "true";
+        } else {
+            return null;
+        }
+    }
+
     public void clearSwitchColors(){
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(COLOR_RED);
@@ -153,6 +173,7 @@ public class PhotoPreferences {
         editor.remove(PREFERENCES_ORIENTATION);
         editor.remove(PREFERENCES_CATEGORY);
         editor.remove(PREFERENCES_CATEGORY_INDEX);
+        editor.remove(PREFERENCES_EDITORS_CHOICE);
         editor.apply();
         clearAllColors();
     }

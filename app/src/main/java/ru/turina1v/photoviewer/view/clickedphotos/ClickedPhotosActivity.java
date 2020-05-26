@@ -75,6 +75,7 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
     public void openDetailPhoto(Hit photo) {
         Intent intent = new Intent(ClickedPhotosActivity.this, PhotoDetailActivity.class);
         intent.putExtra(PhotoDetailActivity.EXTRA_PHOTO, photo);
+        intent.putExtra(PhotoDetailActivity.EXTRA_IS_SET_EXPIRED, false);
         startActivity(intent);
     }
 

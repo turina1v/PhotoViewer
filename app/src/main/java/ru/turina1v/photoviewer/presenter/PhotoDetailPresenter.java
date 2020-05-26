@@ -35,8 +35,11 @@ public class PhotoDetailPresenter extends MvpPresenter<PhotoDetailView> {
         getViewState().showPhoto(photoUrl);
     }
 
-    public void savePhotoToDb(Hit photo) {
-        photo.setExpireTimestamp(System.currentTimeMillis() + FULL_DAY_MILLIS);
+    public void savePhotoToDb(Hit photo, boolean isSetExpired) {
+        photo.setClickTimestamp(System.currentTimeMillis());
+        if (isSetExpired){
+            photo.setExpireTimestamp(System.currentTimeMillis() + FULL_DAY_MILLIS);
+        }
         subscriptions.add(photoDao.insertPhoto(photo).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
                         id -> Log.d(TAG, "onSuccess: photo added to DB"),

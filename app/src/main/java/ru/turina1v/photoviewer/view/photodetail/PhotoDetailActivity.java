@@ -36,6 +36,7 @@ import ru.turina1v.photoviewer.presenter.PhotoDetailPresenter;
 
 public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDetailView {
     public static final String EXTRA_PHOTO = "ru.turina1v.photoviewer.EXTRA_PHOTO";
+    public static final String EXTRA_IS_SET_EXPIRED = "ru.turina1v.photoviewer.EXTRA_IS_SET_EXPIRED";
 
     @InjectPresenter PhotoDetailPresenter presenter;
 
@@ -67,9 +68,10 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         ButterKnife.bind(this);
         Intent intent = getIntent();
         Hit photo = intent.getParcelableExtra(EXTRA_PHOTO);
+        boolean isSetExpired = intent.getBooleanExtra(EXTRA_IS_SET_EXPIRED, true);
         largePhotoUrl = photo.getLargeImageUrl();
         presenter.showDetailPhoto(largePhotoUrl);
-        presenter.savePhotoToDb(photo);
+        presenter.savePhotoToDb(photo, isSetExpired);
     }
 
     @Override

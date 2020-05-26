@@ -117,7 +117,7 @@
             android:layout_marginLeft="@dimen/settings_side_margin"
             android:layout_marginTop="@dimen/line_haf_margin"
             android:layout_marginBottom="@dimen/line_haf_margin"
-            android:text="Прозрачный"/>
+            android:text="@string/checkbox_transparent"/>
 
         <CheckBox
             android:id="@+id/checkbox_grayscale"
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/settings_side_margin"
             android:layout_marginBottom="@dimen/line_margin"
-            android:text="Черно-белый"/>
+            android:text="@string/checkbox_grayscale"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -347,6 +347,54 @@
                 android:background="?android:colorBackground"
                 android:alpha="0.6"/>
         </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:layout_marginRight="@dimen/settings_side_margin"
+            android:layout_marginBottom="@dimen/line_margin"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:text="@string/settings_order"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_standard" />
+
+        <CheckBox
+            android:id="@+id/checkbox_editors_choice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:layout_marginTop="@dimen/line_haf_margin"
+            android:text="@string/checkbox_editors_choice"/>
+
+        <RadioGroup
+            android:id="@+id/order_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/order_popular_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginTop="@dimen/line_haf_margin"
+                android:text="@string/settings_order_popular" />
+
+            <RadioButton
+                android:id="@+id/order_latest_radiobutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginTop="@dimen/line_haf_margin"
+                android:layout_marginBottom="@dimen/line_margin"
+                android:text="@string/settings_order_latest" />
+        </RadioGroup>
 
         <View
             android:layout_width="match_parent"

@@ -61,10 +61,8 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
             // а при детальном просмотре фото - уже нет:
             long photoExpireTime = rawPhotos.get(i).getExpireTimestamp() - SESSION_TIME_MILLIS;
             if (photoExpireTime < currentTime) {
-                List<Hit> expiredPhotosRaw = rawPhotos.subList(i, rawPhotos.size());
-                expiredPhotos.addAll(expiredPhotosRaw);
-                rawPhotos.removeAll(expiredPhotosRaw);
-                break;
+                expiredPhotos.add(rawPhotos.get(i));
+                rawPhotos.remove(i);
             }
         }
         return rawPhotos;

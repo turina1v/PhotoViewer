@@ -26,6 +26,8 @@ public class Hit implements Parcelable, Comparable<Hit> {
     @SerializedName("largeImageURL")
     private String largeImageUrl;
     @Expose
+    private long clickTimestamp;
+    @Expose
     private long expireTimestamp;
 
     public Hit() {
@@ -36,6 +38,8 @@ public class Hit implements Parcelable, Comparable<Hit> {
         previewUrl = in.readString();
         webFormatUrl = in.readString();
         largeImageUrl = in.readString();
+        clickTimestamp = in.readLong();
+        expireTimestamp = in.readLong();
     }
 
     public static final Creator<Hit> CREATOR = new Creator<Hit>() {
@@ -82,6 +86,14 @@ public class Hit implements Parcelable, Comparable<Hit> {
         this.largeImageUrl = largeImageUrl;
     }
 
+    public long getClickTimestamp() {
+        return clickTimestamp;
+    }
+
+    public void setClickTimestamp(long clickTimestamp) {
+        this.clickTimestamp = clickTimestamp;
+    }
+
     public long getExpireTimestamp() {
         return expireTimestamp;
     }
@@ -101,13 +113,15 @@ public class Hit implements Parcelable, Comparable<Hit> {
         dest.writeString(previewUrl);
         dest.writeString(webFormatUrl);
         dest.writeString(largeImageUrl);
+        dest.writeLong(clickTimestamp);
+        dest.writeLong(expireTimestamp);
     }
 
     @Override
     public int compareTo(Hit otherHit) {
-        if (this.expireTimestamp > otherHit.expireTimestamp){
+        if (this.clickTimestamp > otherHit.clickTimestamp){
             return -1;
-        } else if (this.expireTimestamp == otherHit.expireTimestamp){
+        } else if (this.clickTimestamp == otherHit.clickTimestamp){
             return 0;
         } else {
             return 1;

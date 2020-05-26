@@ -59,12 +59,15 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
     RadioButton orientationHorizontalBtn;
     @BindView(R.id.orientation_all_radiobutton)
     RadioButton orientationAllBtn;
+
     @BindView(R.id.spinner_category)
     Spinner spinner;
+
     @BindView(R.id.checkbox_transparent)
     CheckBox transparentCheckbox;
     @BindView(R.id.checkbox_grayscale)
     CheckBox grayscaleCheckbox;
+
     @BindView(R.id.switch_red)
     SwitchButton switchRed;
     @BindView(R.id.switch_orange)
@@ -89,8 +92,12 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
     SwitchButton switchBlack;
     @BindView(R.id.switch_brown)
     SwitchButton switchBrown;
+
     @BindView(R.id.color_blur_layout)
     LinearLayout colorBlurLayout;
+
+    @BindView(R.id.checkbox_editors_choice)
+    CheckBox editorsChoiceCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +112,11 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         transparentCheckbox.setChecked(photoPreferences.isColor(COLOR_TRANSPARENT));
         grayscaleCheckbox.setChecked(photoPreferences.isColor(COLOR_GRAYSCALE));
         setCheckedColorSwitch();
+        editorsChoiceCheckbox.setChecked(photoPreferences.isEditorsChoice());
     }
 
     @OnCheckedChanged({R.id.orientation_vertical_radiobutton, R.id.orientation_horizontal_radiobutton,
-            R.id.orientation_all_radiobutton})
+            R.id.orientation_all_radiobutton, R.id.checkbox_transparent, R.id.checkbox_grayscale})
     public void onOrientationCheckedChanged(CompoundButton button, boolean checked) {
         if (checked) {
             switch (button.getId()) {
@@ -147,6 +155,23 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
                 case R.id.checkbox_grayscale:
                     photoPreferences.saveColor(COLOR_GRAYSCALE, false);
                     colorBlurLayout.setVisibility(View.INVISIBLE);
+                    break;
+            }
+        }
+    }
+
+    @OnCheckedChanged({R.id.checkbox_editors_choice, R.id.order_popular_radiobutton, R.id.order_latest_radiobutton})
+    public void onOrderCheckedChanged(CompoundButton button, boolean checked){
+        if (checked){
+            switch (button.getId()){
+                case R.id.checkbox_editors_choice:
+                    photoPreferences.saveEditorsChoice(true);
+                    break;
+            }
+        } else {
+            switch (button.getId()){
+                case R.id.checkbox_editors_choice:
+                    photoPreferences.saveEditorsChoice(false);
                     break;
             }
         }
