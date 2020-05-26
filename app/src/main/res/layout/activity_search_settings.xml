@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.photolist.PhotoListActivity">
+    tools:context=".view.searchsettings.SearchSettingsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -30,11 +30,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/settings_start_margin"
-            android:layout_marginTop="@dimen/settings_start_margin"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:layout_marginTop="@dimen/settings_side_margin"
             android:text="@string/settings_orientation"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_size_standard" />
 
         <RadioGroup
             android:id="@+id/orientation_radio_group"
@@ -45,24 +45,24 @@
                 android:id="@+id/orientation_vertical_radiobutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_start_margin"
-                android:layout_marginTop="4dp"
+                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginTop="@dimen/line_haf_margin"
                 android:text="@string/settings_orientation_vertical" />
 
             <RadioButton
                 android:id="@+id/orientation_horizontal_radiobutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_start_margin"
-                android:layout_marginTop="4dp"
+                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginTop="@dimen/line_haf_margin"
                 android:text="@string/settings_orientation_horizontal" />
 
             <RadioButton
                 android:id="@+id/orientation_all_radiobutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_start_margin"
-                android:layout_marginTop="4dp"
+                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginTop="@dimen/line_haf_margin"
                 android:checked="true"
                 android:text="@string/settings_orientation_any" />
         </RadioGroup>
@@ -70,35 +70,291 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginLeft="@dimen/settings_start_margin"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="@dimen/settings_start_margin"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:layout_marginTop="@dimen/line_margin"
+            android:layout_marginRight="@dimen/settings_side_margin"
+            android:layout_marginBottom="@dimen/line_margin"
             android:background="@android:color/black" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/settings_start_margin"
+            android:layout_marginLeft="@dimen/settings_side_margin"
             android:text="@string/settings_category"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_size_standard" />
 
         <Spinner
             android:id="@+id/spinner_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="@dimen/settings_start_margin"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginRight="@dimen/settings_side_margin"
+            android:layout_marginBottom="@dimen/line_margin" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginLeft="@dimen/settings_start_margin"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="@dimen/settings_start_margin"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:layout_marginTop="@dimen/line_margin"
+            android:layout_marginRight="@dimen/settings_side_margin"
+            android:layout_marginBottom="@dimen/line_margin"
             android:background="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:text="@string/settings_color"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/checkbox_transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:layout_marginTop="@dimen/line_haf_margin"
+            android:layout_marginBottom="@dimen/line_haf_margin"
+            android:text="Прозрачный"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_grayscale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:layout_marginBottom="@dimen/line_margin"
+            android:text="Черно-белый"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/colors_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/settings_side_margin"
+                    android:layout_marginRight="@dimen/settings_side_margin">
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_red"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="@android:color/holo_red_dark"
+                        app:sb_checked_color="@android:color/holo_red_dark"
+                        app:sb_button_color="@android:color/holo_red_dark"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_orange"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="@android:color/holo_orange_dark"
+                        app:sb_checked_color="@android:color/holo_orange_dark"
+                        app:sb_button_color="@android:color/holo_orange_dark"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_yellow"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="#FDD835"
+                        app:sb_checked_color="#FDD835"
+                        app:sb_button_color="#FDD835"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_green"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="@android:color/holo_green_dark"
+                        app:sb_checked_color="@android:color/holo_green_dark"
+                        app:sb_button_color="@android:color/holo_green_dark"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/settings_side_margin"
+                    android:layout_marginLeft="@dimen/settings_side_margin"
+                    android:layout_marginRight="@dimen/settings_side_margin">
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_blue_light"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="@android:color/holo_blue_light"
+                        app:sb_checked_color="@android:color/holo_blue_light"
+                        app:sb_button_color="@android:color/holo_blue_light"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_blue_dark"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="#0D47A1"
+                        app:sb_checked_color="#0D47A1"
+                        app:sb_button_color="#0D47A1"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_purple"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="#673AB7"
+                        app:sb_checked_color="#673AB7"
+                        app:sb_button_color="#673AB7"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_pink"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="#F48FB1"
+                        app:sb_checked_color="#F48FB1"
+                        app:sb_button_color="#F48FB1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="@dimen/settings_side_margin">
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_white"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_checkline_color="@android:color/darker_gray"
+                        app:sb_uncheckcircle_color="@android:color/white"
+                        app:sb_checked_color="@android:color/white"
+                        app:sb_button_color="@android:color/white"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_gray"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="#BDBDBD"
+                        app:sb_checked_color="#BDBDBD"
+                        app:sb_button_color="#BDBDBD"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        android:layout_marginRight="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="#455A64"
+                        app:sb_uncheckcircle_color="@android:color/black"
+                        app:sb_checked_color="@android:color/black"
+                        app:sb_button_color="@android:color/black"/>
+
+                    <com.suke.widget.SwitchButton
+                        android:id="@+id/switch_brown"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/color_switch_margin"
+                        app:sb_checkline_width="2dp"
+                        app:sb_uncheckcircle_width="2dp"
+                        app:sb_background="@color/color_switch_background"
+                        app:sb_shadow_color="@android:color/black"
+                        app:sb_uncheckcircle_color="#795548"
+                        app:sb_checked_color="#795548"
+                        app:sb_button_color="#795548"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/color_blur_layout"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:colorBackground"
+                android:alpha="0.6"/>
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/settings_side_margin"
+            android:layout_marginRight="@dimen/settings_side_margin"
+            android:layout_marginBottom="@dimen/line_margin"
+            android:background="@android:color/black" />
+
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

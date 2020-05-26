@@ -12,6 +12,7 @@ public interface PhotoApi {
                                      @Query("image_type") String imageType,
                                      @Query("orientation") String orientation,
                                      @Query("category") String category,
+                                     @Query("colors") String colors,
                                      @Query("per_page") String perPage,
                                      @Query("page") String page);
 }

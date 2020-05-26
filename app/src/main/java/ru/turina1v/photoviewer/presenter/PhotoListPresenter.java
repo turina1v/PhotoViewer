@@ -2,6 +2,8 @@ package ru.turina1v.photoviewer.presenter;
 
 import android.util.Log;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -30,8 +32,8 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
         subscriptions = new CompositeDisposable();
     }
 
-    public void downloadPhotoList(String query, String orientation, String category) {
-        subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, getPageString())
+    public void downloadPhotoList(String query, String orientation, String category, String colorQuery) {
+        subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, colorQuery, getPageString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -39,13 +41,13 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                         throwable -> Log.e(TAG, "onError", throwable)));
     }
 
-    public void appendPhotoList(String query, String orientation, String category) {
+    public void appendPhotoList(String query, String orientation, String category, String colorQuery) {
         if (isLoading || isEndReached) {
             return;
         }
         isLoading = true;
         page++;
-        subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, getPageString())
+        subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, colorQuery, getPageString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

@@ -19,6 +19,24 @@ public class PhotoPreferences {
     public static final String CATEGORY_ALL = "all";
     private final String PREFERENCES_CATEGORY_INDEX = "preferences_category_index";
 
+    public static final String COLOR_RED = "red";
+    public static final String COLOR_ORANGE = "orange";
+    public static final String COLOR_YELLOW = "yellow";
+    public static final String COLOR_GREEN = "green";
+    public static final String COLOR_BLUE_LIGHT = "turquoise";
+    public static final String COLOR_BLUE_DARK = "blue";
+    public static final String COLOR_PURPLE = "lilac";
+    public static final String COLOR_PINK = "pink";
+    public static final String COLOR_WHITE = "white";
+    public static final String COLOR_GRAY = "gray";
+    public static final String COLOR_BLACK = "black";
+    public static final String COLOR_BROWN = "brown";
+    public static final String COLOR_TRANSPARENT = "transparent";
+    public static final String COLOR_GRAYSCALE = "grayscale";
+
+    private String[] colors = {COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_GREEN, COLOR_BLUE_LIGHT, COLOR_BLUE_DARK, COLOR_PURPLE,
+    COLOR_PINK, COLOR_WHITE, COLOR_GRAY, COLOR_BLACK, COLOR_BROWN, COLOR_TRANSPARENT, COLOR_GRAYSCALE};
+
     private SharedPreferences preferences;
 
     public PhotoPreferences(Context context) {
@@ -71,6 +89,64 @@ public class PhotoPreferences {
         return preferences.getInt(PREFERENCES_CATEGORY_INDEX, 0);
     }
 
+    public void saveColor(String color, boolean preferred){
+        SharedPreferences.Editor editor = preferences.edit();
+        for (String c : colors){
+            if (c.equals(color)){
+                editor.putBoolean(color, preferred);
+            }
+        }
+        editor.apply();
+    }
+
+    public boolean isColor(String color){
+        for (String c : colors){
+            if (c.equals(color)){
+                return preferences.getBoolean(color, false);
+            }
+        }
+        return false;
+    }
+
+    public String getColorQuery(){
+        String colorQueryRaw = "";
+        for (String color : colors){
+            if (isColor(color)){
+                colorQueryRaw = colorQueryRaw.concat("," + color);
+            }
+        }
+        if ("".equals(colorQueryRaw)){
+            return null;
+        } else {
+            return colorQueryRaw.substring(1);
+        }
+    }
+
+    public void clearSwitchColors(){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(COLOR_RED);
+        editor.remove(COLOR_ORANGE);
+        editor.remove(COLOR_YELLOW);
+        editor.remove(COLOR_GREEN);
+        editor.remove(COLOR_BLUE_LIGHT);
+        editor.remove(COLOR_BLUE_DARK);
+        editor.remove(COLOR_PURPLE);
+        editor.remove(COLOR_PINK);
+        editor.remove(COLOR_WHITE);
+        editor.remove(COLOR_GRAY);
+        editor.remove(COLOR_BLACK);
+        editor.remove(COLOR_BROWN);
+        editor.apply();
+    }
+
+    public void clearAllColors(){
+        SharedPreferences.Editor editor = preferences.edit();
+        for (String color : colors){
+            editor.remove(color);
+        }
+        editor.apply();
+    }
+
     public void clearAll() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(PREFERENCES_QUERY);
@@ -78,5 +154,6 @@ public class PhotoPreferences {
         editor.remove(PREFERENCES_CATEGORY);
         editor.remove(PREFERENCES_CATEGORY_INDEX);
         editor.apply();
+        clearAllColors();
     }
 }

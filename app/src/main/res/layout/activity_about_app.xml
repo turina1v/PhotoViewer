@@ -30,7 +30,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="185dp"
-            android:layout_margin="@dimen/settings_start_margin"
+            android:layout_margin="@dimen/settings_side_margin"
             android:src="@drawable/logo_pixabay" />
 
         <TextView
