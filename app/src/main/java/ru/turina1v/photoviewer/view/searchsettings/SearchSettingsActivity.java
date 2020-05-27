@@ -31,11 +31,6 @@ import ru.turina1v.photoviewer.model.Category;
 import ru.turina1v.photoviewer.model.JsonUtils;
 import ru.turina1v.photoviewer.model.PhotoPreferences;
 
-import static ru.turina1v.photoviewer.model.PhotoPreferences.ORDER_LATEST;
-import static ru.turina1v.photoviewer.model.PhotoPreferences.ORDER_POPULAR;
-import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_ALL;
-import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_HORIZONTAL;
-import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_VERTICAL;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.COLOR_BLACK;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.COLOR_BLUE_DARK;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.COLOR_BLUE_LIGHT;
@@ -50,6 +45,11 @@ import static ru.turina1v.photoviewer.model.PhotoPreferences.COLOR_RED;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.COLOR_TRANSPARENT;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.COLOR_WHITE;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.COLOR_YELLOW;
+import static ru.turina1v.photoviewer.model.PhotoPreferences.ORDER_LATEST;
+import static ru.turina1v.photoviewer.model.PhotoPreferences.ORDER_POPULAR;
+import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_ALL;
+import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_HORIZONTAL;
+import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_VERTICAL;
 
 public class SearchSettingsActivity extends MvpAppCompatActivity implements SwitchButton.OnCheckedChangeListener {
     @Inject
@@ -105,6 +105,9 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
     @BindView(R.id.order_latest_radiobutton)
     RadioButton orderLatestBtn;
 
+    @BindView(R.id.switch_safesearch)
+    SwitchButton safeSearchSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +122,8 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         grayscaleCheckbox.setChecked(photoPreferences.isColor(COLOR_GRAYSCALE));
         setCheckedColorSwitch();
         editorsChoiceCheckbox.setChecked(photoPreferences.isEditorsChoice());
+        safeSearchSwitch.setOnCheckedChangeListener(this);
+        safeSearchSwitch.setChecked(photoPreferences.isSafeSearch());
         setCheckedOrder();
     }
 
@@ -141,9 +146,9 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
     }
 
     @OnCheckedChanged({R.id.checkbox_transparent, R.id.checkbox_grayscale})
-    public void onColorCheckboxChanged(CompoundButton button, boolean checked){
-        if (checked){
-            switch (button.getId()){
+    public void onColorCheckboxChanged(CompoundButton button, boolean checked) {
+        if (checked) {
+            switch (button.getId()) {
                 case R.id.checkbox_transparent:
                     photoPreferences.saveColor(COLOR_TRANSPARENT, true);
                     break;
@@ -155,7 +160,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
                     break;
             }
         } else {
-            switch (button.getId()){
+            switch (button.getId()) {
                 case R.id.checkbox_transparent:
                     photoPreferences.saveColor(COLOR_TRANSPARENT, false);
                     break;
@@ -168,9 +173,9 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
     }
 
     @OnCheckedChanged({R.id.checkbox_editors_choice, R.id.order_popular_radiobutton, R.id.order_latest_radiobutton})
-    public void onOrderCheckedChanged(CompoundButton button, boolean checked){
-        if (checked){
-            switch (button.getId()){
+    public void onOrderCheckedChanged(CompoundButton button, boolean checked) {
+        if (checked) {
+            switch (button.getId()) {
                 case R.id.checkbox_editors_choice:
                     photoPreferences.saveEditorsChoice(true);
                     break;
@@ -188,7 +193,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
 
     @Override
     public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.switch_red:
                 photoPreferences.saveColor(COLOR_RED, isChecked);
                 break;
@@ -224,6 +229,9 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
                 break;
             case R.id.switch_brown:
                 photoPreferences.saveColor(COLOR_BROWN, isChecked);
+                break;
+            case R.id.switch_safesearch:
+                photoPreferences.saveSafeSearch(isChecked);
                 break;
         }
     }
@@ -284,7 +292,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         });
     }
 
-    private void setCheckedColorSwitch(){
+    private void setCheckedColorSwitch() {
         switchRed.setChecked(photoPreferences.isColor(COLOR_RED));
         switchOrange.setChecked(photoPreferences.isColor(COLOR_ORANGE));
         switchYellow.setChecked(photoPreferences.isColor(COLOR_YELLOW));
@@ -324,7 +332,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         }
     }
 
-    private void initColorSwitch(){
+    private void initColorSwitch() {
         switchRed.setOnCheckedChangeListener(this);
         switchOrange.setOnCheckedChangeListener(this);
         switchYellow.setOnCheckedChangeListener(this);
@@ -338,8 +346,4 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         switchBlack.setOnCheckedChangeListener(this);
         switchBrown.setOnCheckedChangeListener(this);
     }
-
-
-
-
 }

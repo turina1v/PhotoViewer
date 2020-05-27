@@ -2,7 +2,7 @@
 <resources>
     <dimen name="settings_side_margin">16dp</dimen>
     <dimen name="line_margin">8dp</dimen>
-    <dimen name="line_haf_margin">4dp</dimen>
+    <dimen name="line_half_margin">4dp</dimen>
     <dimen name="color_switch_margin">16dp</dimen>
     <dimen name="text_size_standard">16sp</dimen>
 </resources>

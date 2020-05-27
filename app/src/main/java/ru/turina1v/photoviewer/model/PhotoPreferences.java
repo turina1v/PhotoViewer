@@ -35,12 +35,14 @@ public class PhotoPreferences {
     public static final String COLOR_GRAYSCALE = "grayscale";
 
     private String[] colors = {COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_GREEN, COLOR_BLUE_LIGHT, COLOR_BLUE_DARK, COLOR_PURPLE,
-    COLOR_PINK, COLOR_WHITE, COLOR_GRAY, COLOR_BLACK, COLOR_BROWN, COLOR_TRANSPARENT, COLOR_GRAYSCALE};
+            COLOR_PINK, COLOR_WHITE, COLOR_GRAY, COLOR_BLACK, COLOR_BROWN, COLOR_TRANSPARENT, COLOR_GRAYSCALE};
 
     private final String PREFERENCES_EDITORS_CHOICE = "preferences_editors_choice";
     public static final String PREFERENCES_ORDER = "preferences_order";
     public static final String ORDER_POPULAR = "popular";
     public static final String ORDER_LATEST = "latest";
+
+    private final String PREFERENCES_SAFE_SEARCH = "preferences_safe_search";
 
     private SharedPreferences preferences;
 
@@ -94,33 +96,33 @@ public class PhotoPreferences {
         return preferences.getInt(PREFERENCES_CATEGORY_INDEX, 0);
     }
 
-    public void saveColor(String color, boolean preferred){
+    public void saveColor(String color, boolean preferred) {
         SharedPreferences.Editor editor = preferences.edit();
-        for (String c : colors){
-            if (c.equals(color)){
+        for (String c : colors) {
+            if (c.equals(color)) {
                 editor.putBoolean(color, preferred);
             }
         }
         editor.apply();
     }
 
-    public boolean isColor(String color){
-        for (String c : colors){
-            if (c.equals(color)){
+    public boolean isColor(String color) {
+        for (String c : colors) {
+            if (c.equals(color)) {
                 return preferences.getBoolean(color, false);
             }
         }
         return false;
     }
 
-    public String getColorQuery(){
+    public String getColorQuery() {
         String colorQueryRaw = "";
-        for (String color : colors){
-            if (isColor(color)){
+        for (String color : colors) {
+            if (isColor(color)) {
                 colorQueryRaw = colorQueryRaw.concat("," + color);
             }
         }
-        if ("".equals(colorQueryRaw)){
+        if ("".equals(colorQueryRaw)) {
             return null;
         } else {
             return colorQueryRaw.substring(1);
@@ -137,8 +139,8 @@ public class PhotoPreferences {
         return preferences.getBoolean(PREFERENCES_EDITORS_CHOICE, false);
     }
 
-    public String getEditorsChoiceQuery(){
-        if (isEditorsChoice()){
+    public String getEditorsChoiceQuery() {
+        if (isEditorsChoice()) {
             return "true";
         } else {
             return null;
@@ -155,7 +157,25 @@ public class PhotoPreferences {
         return preferences.getString(PREFERENCES_ORDER, null);
     }
 
-    public void clearSwitchColors(){
+    public void saveSafeSearch(boolean isSafeSearch) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PREFERENCES_SAFE_SEARCH, isSafeSearch);
+        editor.apply();
+    }
+
+    public boolean isSafeSearch() {
+        return preferences.getBoolean(PREFERENCES_SAFE_SEARCH, true);
+    }
+
+    public String getSafeSearchQuery() {
+        if (isSafeSearch()) {
+            return "true";
+        } else {
+            return null;
+        }
+    }
+
+    public void clearSwitchColors() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(COLOR_RED);
         editor.remove(COLOR_ORANGE);
@@ -172,9 +192,9 @@ public class PhotoPreferences {
         editor.apply();
     }
 
-    public void clearAllColors(){
+    public void clearAllColors() {
         SharedPreferences.Editor editor = preferences.edit();
-        for (String color : colors){
+        for (String color : colors) {
             editor.remove(color);
         }
         editor.apply();
