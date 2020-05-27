@@ -14,6 +14,7 @@ public interface PhotoApi {
                                      @Query("category") String category,
                                      @Query("colors") String colors,
                                      @Query("editors_choice") String editorsChoice,
+                                     @Query("order") String order,
                                      @Query("per_page") String perPage,
                                      @Query("page") String page);
 }

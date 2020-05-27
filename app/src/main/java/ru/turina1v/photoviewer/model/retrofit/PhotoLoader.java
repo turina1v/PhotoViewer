@@ -32,8 +32,9 @@ public class PhotoLoader {
     }
 
     public Single<PhotoList> requestServer(String query, String orientation, String category, String colors,
-                                           String editorsChoice, String page) {
-        return api.loadPhotosList(apiKey, query, imageType, orientation, category, colors, editorsChoice, perPage, page)
+                                           String editorsChoice, String order, String page) {
+        return api.loadPhotosList(apiKey, query, imageType, orientation, category, colors, editorsChoice, order,
+                perPage, page)
                 .subscribeOn(Schedulers.io());
     }
 }

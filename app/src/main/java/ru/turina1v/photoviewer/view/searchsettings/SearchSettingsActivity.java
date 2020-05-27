@@ -31,6 +31,8 @@ import ru.turina1v.photoviewer.model.Category;
 import ru.turina1v.photoviewer.model.JsonUtils;
 import ru.turina1v.photoviewer.model.PhotoPreferences;
 
+import static ru.turina1v.photoviewer.model.PhotoPreferences.ORDER_LATEST;
+import static ru.turina1v.photoviewer.model.PhotoPreferences.ORDER_POPULAR;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_ALL;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_HORIZONTAL;
 import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_VERTICAL;
@@ -98,6 +100,10 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
 
     @BindView(R.id.checkbox_editors_choice)
     CheckBox editorsChoiceCheckbox;
+    @BindView(R.id.order_popular_radiobutton)
+    RadioButton orderPopularBtn;
+    @BindView(R.id.order_latest_radiobutton)
+    RadioButton orderLatestBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +119,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         grayscaleCheckbox.setChecked(photoPreferences.isColor(COLOR_GRAYSCALE));
         setCheckedColorSwitch();
         editorsChoiceCheckbox.setChecked(photoPreferences.isEditorsChoice());
+        setCheckedOrder();
     }
 
     @OnCheckedChanged({R.id.orientation_vertical_radiobutton, R.id.orientation_horizontal_radiobutton,
@@ -167,13 +174,15 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
                 case R.id.checkbox_editors_choice:
                     photoPreferences.saveEditorsChoice(true);
                     break;
-            }
-        } else {
-            switch (button.getId()){
-                case R.id.checkbox_editors_choice:
-                    photoPreferences.saveEditorsChoice(false);
+                case R.id.order_popular_radiobutton:
+                    photoPreferences.saveOrder(ORDER_POPULAR);
+                    break;
+                case R.id.order_latest_radiobutton:
+                    photoPreferences.saveOrder(ORDER_LATEST);
                     break;
             }
+        } else if (button.getId() == R.id.checkbox_editors_choice) {
+            photoPreferences.saveEditorsChoice(false);
         }
     }
 
@@ -288,6 +297,22 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         switchGray.setChecked(photoPreferences.isColor(COLOR_GRAY));
         switchBlack.setChecked(photoPreferences.isColor(COLOR_BLACK));
         switchBrown.setChecked(photoPreferences.isColor(COLOR_BROWN));
+    }
+
+    private void setCheckedOrder() {
+        String order = photoPreferences.getOrder();
+        if (order == null) {
+            orderPopularBtn.setChecked(true);
+            return;
+        }
+        switch (order) {
+            case (ORDER_POPULAR):
+                orderPopularBtn.setChecked(true);
+                break;
+            case (ORDER_LATEST):
+                orderLatestBtn.setChecked(true);
+                break;
+        }
     }
 
     private void initToolbar() {

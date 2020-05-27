@@ -32,8 +32,8 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
         subscriptions = new CompositeDisposable();
     }
 
-    public void downloadPhotoList(String query, String orientation, String category, String colorQuery, String editorsChoice) {
-        subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, colorQuery, editorsChoice, getPageString())
+    public void downloadPhotoList(String query, String orientation, String category, String colorQuery, String editorsChoice, String order) {
+        subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, colorQuery, editorsChoice, order, getPageString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -41,13 +41,13 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                         throwable -> Log.e(TAG, "onError", throwable)));
     }
 
-    public void appendPhotoList(String query, String orientation, String category, String colorQuery, String editorsChoice) {
+    public void appendPhotoList(String query, String orientation, String category, String colorQuery, String editorsChoice, String order) {
         if (isLoading || isEndReached) {
             return;
         }
         isLoading = true;
         page++;
-        subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, colorQuery, editorsChoice, getPageString())
+        subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, colorQuery, editorsChoice, order, getPageString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

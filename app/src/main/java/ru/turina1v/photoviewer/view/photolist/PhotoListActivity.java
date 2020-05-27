@@ -62,7 +62,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         photoPreferences.clearAll();
         initToolbar();
         initPhotoRecycler();
-        presenter.downloadPhotoList(null, null, null, null, null);
+        presenter.downloadPhotoList(null, null, null, null, null, null);
     }
 
     @Override
@@ -80,7 +80,8 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
             adapter.clearPhotosList();
             presenter.resetPage();
             presenter.downloadPhotoList(photoPreferences.getQuery(), photoPreferences.getOrientation(),
-                    photoPreferences.getCategory(), photoPreferences.getColorQuery(), photoPreferences.getEditorsChoiceQuery());
+                    photoPreferences.getCategory(), photoPreferences.getColorQuery(),
+                    photoPreferences.getEditorsChoiceQuery(), photoPreferences.getOrder());
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -100,7 +101,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
                 photoPreferences.saveQuery(query);
                 presenter.resetPage();
                 presenter.downloadPhotoList(query, photoPreferences.getOrientation(), photoPreferences.getCategory(),
-                        photoPreferences.getColorQuery(), photoPreferences.getEditorsChoiceQuery());
+                        photoPreferences.getColorQuery(), photoPreferences.getEditorsChoiceQuery(), photoPreferences.getOrder());
                 return false;
             }
 
@@ -120,7 +121,8 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
                 et.setText("");
                 photoPreferences.clearQuery();
                 presenter.downloadPhotoList(null, photoPreferences.getOrientation(),
-                        photoPreferences.getCategory(), photoPreferences.getColorQuery(), photoPreferences.getEditorsChoiceQuery());
+                        photoPreferences.getCategory(), photoPreferences.getColorQuery(),
+                        photoPreferences.getEditorsChoiceQuery(), photoPreferences.getOrder());
             }
         });
 
@@ -159,7 +161,8 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!recyclerView.canScrollVertically(1)) {
                     presenter.appendPhotoList(photoPreferences.getQuery(), photoPreferences.getOrientation(),
-                            photoPreferences.getCategory(), photoPreferences.getColorQuery(), photoPreferences.getEditorsChoiceQuery());
+                            photoPreferences.getCategory(), photoPreferences.getColorQuery(),
+                            photoPreferences.getEditorsChoiceQuery(), photoPreferences.getOrder());
                 }
             }
         });
