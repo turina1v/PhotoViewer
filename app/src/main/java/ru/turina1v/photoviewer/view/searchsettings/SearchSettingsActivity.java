@@ -54,6 +54,7 @@ import static ru.turina1v.photoviewer.model.PhotoPreferences.ORIENTATION_VERTICA
 public class SearchSettingsActivity extends MvpAppCompatActivity implements SwitchButton.OnCheckedChangeListener {
     @Inject
     PhotoPreferences photoPreferences;
+    private PhotoPreferences.PreferencesState initialPreferencesState;
 
     @BindView(R.id.orientation_vertical_radiobutton)
     RadioButton orientationVerticalBtn;
@@ -114,6 +115,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         setContentView(R.layout.activity_search_settings);
         App.getComponent().inject(this);
         ButterKnife.bind(this);
+        initialPreferencesState = photoPreferences.getPreferenceState();
         initToolbar();
         initColorSwitch();
         setCheckedOrientation();
@@ -238,15 +240,20 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
 
     @Override
     public void onBackPressed() {
-        setResult(Activity.RESULT_OK);
+        setPreferencesResult();
         finish();
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        setResult(Activity.RESULT_OK);
+        setPreferencesResult();
         finish();
         return true;
+    }
+
+    private void setPreferencesResult(){
+        PhotoPreferences.PreferencesState currentPreferencesState = photoPreferences.getPreferenceState();
+        setResult(currentPreferencesState.equals(initialPreferencesState) ? Activity.RESULT_CANCELED : Activity.RESULT_OK);
     }
 
     private void setCheckedOrientation() {

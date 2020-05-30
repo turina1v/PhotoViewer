@@ -3,6 +3,8 @@ package ru.turina1v.photoviewer.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Objects;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class PhotoPreferences {
@@ -208,7 +210,90 @@ public class PhotoPreferences {
         editor.remove(PREFERENCES_CATEGORY_INDEX);
         editor.remove(PREFERENCES_EDITORS_CHOICE);
         editor.remove(PREFERENCES_ORDER);
+        editor.remove(PREFERENCES_SAFE_SEARCH);
         editor.apply();
         clearAllColors();
+    }
+
+    public PreferencesState getPreferenceState(){
+        return new PreferencesState(this);
+    }
+
+    public static class PreferencesState {
+        private String query;
+        private String orientation;
+        private String category;
+        private boolean isColorRed;
+        private boolean isColorOrange;
+        private boolean isColorYellow;
+        private boolean isColorGreen;
+        private boolean isColorBlueLight;
+        private boolean isColorBlueDark;
+        private boolean isColorPurple;
+        private boolean isColorPink;
+        private boolean isColorWhite;
+        private boolean isColorGray;
+        private boolean isColorBlack;
+        private boolean isColorBrown;
+        private boolean isColorTransparent;
+        private boolean isColorGrayscale;
+        private boolean editorsChoice;
+        private String order;
+        private boolean isSafeSearch;
+
+        private PreferencesState(PhotoPreferences photoPreferences) {
+            query = photoPreferences.getQuery();
+            orientation = photoPreferences.getOrientation();
+            category = photoPreferences.getCategory();
+            isColorRed = photoPreferences.isColor(COLOR_RED);
+            isColorOrange = photoPreferences.isColor(COLOR_ORANGE);
+            isColorYellow = photoPreferences.isColor(COLOR_YELLOW);
+            isColorGreen = photoPreferences.isColor(COLOR_GREEN);
+            isColorBlueLight = photoPreferences.isColor(COLOR_BLUE_LIGHT);
+            isColorBlueDark = photoPreferences.isColor(COLOR_BLUE_DARK);
+            isColorPurple = photoPreferences.isColor(COLOR_PURPLE);
+            isColorPink = photoPreferences.isColor(COLOR_PINK);
+            isColorWhite = photoPreferences.isColor(COLOR_WHITE);
+            isColorGray = photoPreferences.isColor(COLOR_GRAY);
+            isColorBlack = photoPreferences.isColor(COLOR_BLACK);
+            isColorBrown = photoPreferences.isColor(COLOR_BROWN);
+            isColorTransparent = photoPreferences.isColor(COLOR_TRANSPARENT);
+            isColorGrayscale = photoPreferences.isColor(COLOR_GRAYSCALE);
+            editorsChoice = photoPreferences.isEditorsChoice();
+            order = photoPreferences.getOrder();
+            isSafeSearch = photoPreferences.isSafeSearch();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PreferencesState that = (PreferencesState) o;
+            return isColorRed == that.isColorRed &&
+                    isColorOrange == that.isColorOrange &&
+                    isColorYellow == that.isColorYellow &&
+                    isColorGreen == that.isColorGreen &&
+                    isColorBlueLight == that.isColorBlueLight &&
+                    isColorBlueDark == that.isColorBlueDark &&
+                    isColorPurple == that.isColorPurple &&
+                    isColorPink == that.isColorPink &&
+                    isColorWhite == that.isColorWhite &&
+                    isColorGray == that.isColorGray &&
+                    isColorBlack == that.isColorBlack &&
+                    isColorBrown == that.isColorBrown &&
+                    isColorTransparent == that.isColorTransparent &&
+                    isColorGrayscale == that.isColorGrayscale &&
+                    editorsChoice == that.editorsChoice &&
+                    isSafeSearch == that.isSafeSearch &&
+                    Objects.equals(query, that.query) &&
+                    Objects.equals(orientation, that.orientation) &&
+                    Objects.equals(category, that.category) &&
+                    Objects.equals(order, that.order);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(query, orientation, category, isColorRed, isColorOrange, isColorYellow, isColorGreen, isColorBlueLight, isColorBlueDark, isColorPurple, isColorPink, isColorWhite, isColorGray, isColorBlack, isColorBrown, isColorTransparent, isColorGrayscale, editorsChoice, order, isSafeSearch);
+        }
     }
 }
