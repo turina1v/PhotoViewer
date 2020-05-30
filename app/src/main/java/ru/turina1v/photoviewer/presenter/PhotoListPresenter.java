@@ -2,6 +2,8 @@ package ru.turina1v.photoviewer.presenter;
 
 import android.util.Log;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -10,6 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.turina1v.photoviewer.App;
+import ru.turina1v.photoviewer.R;
 import ru.turina1v.photoviewer.model.retrofit.PhotoLoader;
 import ru.turina1v.photoviewer.view.photolist.PhotoListView;
 
@@ -32,13 +35,21 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
 
     public void downloadPhotoList(String query, String orientation, String category, String colorQuery,
                                   String editorsChoice, String order, String safesearch) {
+        getViewState().showLoader();
         subscriptions.add(loader.requestServer(prepareQuery(query), orientation, category, colorQuery, editorsChoice,
                 order, safesearch, getPageString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         photoList -> getViewState().updatePhotoRecycler(photoList.getHits()),
-                        throwable -> Log.e(TAG, "onError", throwable)));
+                        throwable -> {
+                            if (throwable instanceof IOException){
+                                getViewState().showErrorScreen(R.string.load_info_network_error);
+                            } else {
+                                getViewState().showErrorScreen(R.string.load_info_server_error);
+                            }
+                            Log.e(TAG, "onError", throwable);
+                        }));
     }
 
     public void appendPhotoList(String query, String orientation, String category, String colorQuery,
@@ -62,6 +73,11 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                             isLoading = false;
                         },
                         throwable -> {
+                            if (throwable instanceof IOException){
+                                getViewState().showErrorToast(R.string.load_info_network_error_short);
+                            } else {
+                                getViewState().showErrorToast(R.string.load_info_server_error_short);
+                            }
                             Log.e(TAG, "onError", throwable);
                             isLoading = false;
                         }));

@@ -11,14 +11,15 @@ import com.squareup.picasso.Target;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
+import ru.turina1v.photoviewer.R;
 
 public class PicassoLoader {
     public static void loadImage(ImageView imageView, String url) {
-        Picasso.get().load(url).into(imageView);
+        Picasso.get().load(url).placeholder(R.drawable.ic_placeholder).error(R.drawable.ic_placeholder_error).into(imageView);
     }
 
     public static void loadImage(ImageView imageView, String url, Callback callback) {
-        Picasso.get().load(url).into(imageView, callback);
+        Picasso.get().load(url).error(R.drawable.ic_placeholder_error_detail).into(imageView, callback);
     }
 
     public static Single<Bitmap> downloadImage(String url) {

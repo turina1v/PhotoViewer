@@ -8,6 +8,12 @@ import ru.turina1v.photoviewer.model.entity.Hit;
 public interface PhotoListView extends MvpView {
     void initPhotoRecycler();
 
+    void showLoader();
+
+    void showErrorScreen(int stringId);
+
+    void showErrorToast(int stringId);
+
     void updatePhotoRecycler(List<Hit> photos);
 
     void appendPhotoRecycler(List<Hit> photos);

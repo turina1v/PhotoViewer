@@ -18,6 +18,7 @@
     <string name="about_app_email">E-mail: turina.valentina@gmail.com</string>
     <string name="load_info_nothing_found">По вашему запросу ничего не найдено. \nПопробуйте изменить параметры поиска.</string>
     <string name="load_info_image_loading">Загрузка изображения…</string>
+    <string name="load_info_images_loading">Загрузка изображений…</string>
     <string name="toast_saved_to_gallery">Изображение сохранено в галерее</string>
     <string name="toast_wallpaper_set">Обои установлены</string>
     <string name="menu_search">Search</string>
@@ -29,4 +30,8 @@
     <string name="settings_order_popular">Популярные</string>
     <string name="settings_order_latest">Недавно добавленные</string>
     <string name="settings_safesearch">Безопасный поиск</string>
+    <string name="load_info_network_error">Произошла ошибка подключения к сети. \nПожалуйста, проверьте настройки подключения.</string>
+    <string name="load_info_server_error">Произошла ошибка подключения к серверу. \nПожалуйста, попробуйте подключиться позднее.</string>
+    <string name="load_info_server_error_short">Ошибка подключения к серверу</string>
+    <string name="load_info_network_error_short">Ошибка подключения к сети</string>
 </resources>

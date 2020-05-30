@@ -2,6 +2,7 @@ package ru.turina1v.photoviewer.view.photolist;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,7 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +21,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,8 +52,14 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     @Inject
     PhotoPreferences photoPreferences;
 
+    @BindView(R.id.swipe_to_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.layout_loader)
+    LinearLayout loaderLayout;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
     @BindView(R.id.text_load_info)
     TextView loadInfoText;
 
@@ -61,6 +73,10 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         ButterKnife.bind(this);
         photoPreferences.clearAll();
         initToolbar();
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.downloadPhotoList(null, null, null, null,
+                null, null, photoPreferences.getSafeSearchQuery()));
+        loadInfoText.setTextColor(Color.BLACK);
+        loadInfoText.setText(R.string.load_info_images_loading);
         initPhotoRecycler();
         presenter.downloadPhotoList(null, null, null, null,
                 null, null, photoPreferences.getSafeSearchQuery());
@@ -171,15 +187,37 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
 
     @Override
     public void updatePhotoRecycler(List<Hit> photos) {
+        swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
         if (photos.size() == 0) {
-            recyclerView.setVisibility(View.GONE);
-            loadInfoText.setVisibility(View.VISIBLE);
             loadInfoText.setText(R.string.load_info_nothing_found);
         } else {
             loadInfoText.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             adapter.setPhotosList(photos);
         }
+    }
+
+    @Override
+    public void showLoader() {
+        progressBar.setVisibility(View.VISIBLE);
+        loadInfoText.setVisibility(View.VISIBLE);
+        loadInfoText.setText(R.string.load_info_images_loading);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showErrorScreen(int stringId) {
+        swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
+        loadInfoText.setVisibility(View.VISIBLE);
+        loadInfoText.setText(stringId);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showErrorToast(int stringId) {
+        Toast.makeText(this, stringId, Toast.LENGTH_LONG).show();
     }
 
     @Override
