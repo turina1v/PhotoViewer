@@ -10,9 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.github.chrisbanes.photoview.PhotoView;
 import com.karumi.dexter.Dexter;
@@ -22,6 +24,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.squareup.picasso.Callback;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,12 +42,21 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     public static final String EXTRA_PHOTO = "ru.turina1v.photoviewer.EXTRA_PHOTO";
     public static final String EXTRA_IS_SET_EXPIRED = "ru.turina1v.photoviewer.EXTRA_IS_SET_EXPIRED";
 
-    @InjectPresenter PhotoDetailPresenter presenter;
+    @InjectPresenter
+    PhotoDetailPresenter presenter;
 
-    @BindView(R.id.photo_detail_view) PhotoView photoDetailView;
-    @BindView(R.id.button_save) Button saveButton;
-    @BindView(R.id.button_set_wallpaper) Button setWallpaperButton;
-    @BindView(R.id.layout_loader) LinearLayout loaderLayout;
+    @BindView(R.id.photo_detail_view)
+    PhotoView photoDetailView;
+    @BindView(R.id.error_text)
+    TextView errorTextView;
+    @BindView(R.id.button_save)
+    Button saveButton;
+    @BindView(R.id.button_set_wallpaper)
+    Button setWallpaperButton;
+    @BindView(R.id.layout_loader)
+    LinearLayout loaderLayout;
+    @BindView(R.id.swipe_to_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private CompositeDisposable subscriptions = new CompositeDisposable();
     private String largePhotoUrl;
@@ -70,23 +83,33 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         Hit photo = intent.getParcelableExtra(EXTRA_PHOTO);
         boolean isSetExpired = intent.getBooleanExtra(EXTRA_IS_SET_EXPIRED, true);
         largePhotoUrl = photo.getLargeImageUrl();
+        swipeRefreshLayout.setOnRefreshListener(() -> showPhoto(largePhotoUrl));
         presenter.showDetailPhoto(largePhotoUrl);
         presenter.savePhotoToDb(photo, isSetExpired);
     }
 
     @Override
     public void showPhoto(String photoUrl) {
+        swipeRefreshLayout.setRefreshing(false);
+        errorTextView.setVisibility(View.GONE);
+        loaderLayout.setVisibility(View.VISIBLE);
         PicassoLoader.loadImage(photoDetailView, photoUrl, new Callback() {
             @Override
             public void onSuccess() {
-                loaderLayout.setVisibility(View.GONE);
+                loaderLayout.setVisibility(View.INVISIBLE);
                 saveButton.setVisibility(View.VISIBLE);
                 setWallpaperButton.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onError(Exception e) {
-
+                loaderLayout.setVisibility(View.INVISIBLE);
+                errorTextView.setVisibility(View.VISIBLE);
+                if (e instanceof IOException){
+                    errorTextView.setText(R.string.load_info_network_error);
+                } else {
+                    errorTextView.setText(R.string.load_info_server_error);
+                }
             }
         });
     }
@@ -102,7 +125,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     }
 
     @SuppressLint("MissingPermission")
-    private void setWallpaper(){
+    private void setWallpaper() {
         WallpaperManager wm = WallpaperManager.getInstance(this);
         subscriptions.add(PicassoLoader.downloadImage(largePhotoUrl).subscribe(
                 bitmap -> {
@@ -114,7 +137,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
 
     }
 
-    private void requestGalleryPermission(){
+    private void requestGalleryPermission() {
         Dexter.withContext(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
@@ -140,7 +163,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!subscriptions.isDisposed()){
+        if (!subscriptions.isDisposed()) {
             subscriptions.dispose();
         }
     }
