@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Viewer</string>
+    <string name="photo_content_description">Photo</string>
+    <string name="settings_orientation">Ориентация</string>
+    <string name="settings_orientation_vertical">Вертикальная</string>
+    <string name="settings_orientation_horizontal">Горизонтальная</string>
+    <string name="settings_orientation_any">Любая</string>
+    <string name="settings_category">Категория</string>
+    <string name="settings_color">Цвет</string>
+    <string name="settings_order">Сортировка</string>
+    <string name="toolbar_settings">Настройки поиска</string>
+    <string name="toolbar_about_app">О приложении</string>
+    <string name="toolbar_clicked_photos">Последние просмотренные</string>
+    <string name="save_to_gallery">Сохранить на устройство</string>
+    <string name="set_wallpaper">Установить обои</string>
+    <string name="about_app_pixabay">Приложение работает на базе сервиса <b>pixabay.com</b></string>
+    <string name="about_app_developer"><b>Разработчик:</b> Валентина Тюрина</string>
+    <string name="about_app_email"><b>E-mail:</b> turina.valentina@gmail.com</string>
+    <string name="load_info_nothing_found">По вашему запросу ничего не найдено. \nПопробуйте изменить параметры поиска.</string>
+    <string name="load_info_image_loading">Загрузка изображения…</string>
+    <string name="load_info_images_loading">Загрузка изображений…</string>
+    <string name="toast_saved_to_gallery">Изображение сохранено в галерее</string>
+    <string name="toast_wallpaper_set">Обои установлены</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_last_viewed">Последние просмотренные</string>
+    <string name="menu_about">О приложении</string>
+    <string name="checkbox_editors_choice">Выбор редакции</string>
+    <string name="checkbox_grayscale">Черно-белый</string>
+    <string name="checkbox_transparent">Прозрачный</string>
+    <string name="settings_order_popular">Популярные</string>
+    <string name="settings_order_latest">Недавно добавленные</string>
+    <string name="settings_safesearch">Безопасный поиск</string>
+    <string name="load_info_network_error">Произошла ошибка подключения к сети.\nПожалуйста, проверьте настройки подключения.</string>
+    <string name="load_info_server_error">Произошла ошибка подключения к серверу.\nПожалуйста, попробуйте подключиться позднее.</string>
+    <string name="load_info_server_error_short">Ошибка подключения к серверу</string>
+    <string name="load_info_network_error_short">Ошибка подключения к сети</string>
+    <string name="load_info_no_clicked_photos">Здесь будут отображены просмотренные изображения.\n*Ссылки на фото хранятся 24 часа</string>
+</resources>
