@@ -134,10 +134,12 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
             if ("".equals(query)) {
                 searchView.onActionViewCollapsed();
                 searchViewItem.collapseActionView();
-                photoPreferences.clearQuery();
-                presenter.downloadPhotoList(null, photoPreferences.getOrientation(),
-                        photoPreferences.getCategory(), photoPreferences.getColorQuery(),
-                        photoPreferences.getEditorsChoiceQuery(), photoPreferences.getOrder(), photoPreferences.getSafeSearchQuery());
+                if (photoPreferences.getQuery() != null){
+                    photoPreferences.clearQuery();
+                    presenter.downloadPhotoList(null, photoPreferences.getOrientation(),
+                            photoPreferences.getCategory(), photoPreferences.getColorQuery(),
+                            photoPreferences.getEditorsChoiceQuery(), photoPreferences.getOrder(), photoPreferences.getSafeSearchQuery());
+                }
             } else {
                 et.setText("");
             }
