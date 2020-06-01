@@ -75,8 +75,6 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                         throwable -> {
                             if (throwable instanceof IOException){
                                 getViewState().showErrorToast(R.string.load_info_network_error_short);
-                            } else {
-                                getViewState().showErrorToast(R.string.load_info_server_error_short);
                             }
                             Log.e(TAG, "onError", throwable);
                             isLoading = false;

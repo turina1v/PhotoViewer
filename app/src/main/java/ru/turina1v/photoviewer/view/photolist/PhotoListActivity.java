@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
