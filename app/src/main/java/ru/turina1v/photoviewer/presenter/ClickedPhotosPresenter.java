@@ -2,6 +2,7 @@ package ru.turina1v.photoviewer.presenter;
 
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.turina1v.photoviewer.App;
+import ru.turina1v.photoviewer.R;
 import ru.turina1v.photoviewer.model.database.PhotoDao;
 import ru.turina1v.photoviewer.model.database.PhotoDatabase;
 import ru.turina1v.photoviewer.model.entity.Hit;
@@ -41,6 +43,7 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     }
 
     public void getPhotosFromDB() {
+        getViewState().showLoader();
         subscriptions.add(photoDao.getAll()
                 .map(this::preparePhotoList)
                 .subscribeOn(Schedulers.io())
@@ -50,7 +53,14 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
                             getViewState().updatePhotoRecycler(photos);
                             clearExpiredPhotos(expiredPhotos);
                             },
-                        throwable -> Log.e(TAG, "onError", throwable)));
+                        throwable -> {
+                            if (throwable instanceof IOException){
+                                getViewState().showErrorScreen(R.string.load_info_network_error);
+                            } else {
+                                getViewState().showErrorScreen(R.string.load_info_server_error);
+                            }
+                            Log.e(TAG, "onError", throwable);
+                        }));
     }
 
     private List<Hit> preparePhotoList(List<Hit> rawPhotos) {

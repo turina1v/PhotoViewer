@@ -2,11 +2,15 @@ package ru.turina1v.photoviewer.view.clickedphotos;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -28,8 +32,14 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.layout_loader)
+    LinearLayout loaderLayout;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
     @BindView(R.id.text_load_info)
     TextView loadInfoText;
+    @BindView(R.id.swipe_to_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     PhotoListAdapter adapter;
 
@@ -39,6 +49,8 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
         setContentView(R.layout.activity_photo_list);
         ButterKnife.bind(this);
         initToolbar();
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.getPhotosFromDB());
+        loadInfoText.setText(R.string.load_info_images_loading);
         initPhotoRecycler();
         //presenter.clearAll();
     }
@@ -68,7 +80,32 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
 
     @Override
     public void updatePhotoRecycler(List<Hit> photos) {
-        adapter.setPhotosList(photos);
+        swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
+        if (photos.size() == 0) {
+            loadInfoText.setText(R.string.load_info_no_clicked_photos);
+        } else {
+            loadInfoText.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            adapter.setPhotosList(photos);
+        }
+    }
+
+    @Override
+    public void showLoader() {
+        progressBar.setVisibility(View.VISIBLE);
+        loadInfoText.setVisibility(View.VISIBLE);
+        loadInfoText.setText(R.string.load_info_images_loading);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showErrorScreen(int stringId) {
+        swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
+        loadInfoText.setVisibility(View.VISIBLE);
+        loadInfoText.setText(stringId);
+        recyclerView.setVisibility(View.INVISIBLE);
     }
 
     @Override
