@@ -131,14 +131,15 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         EditText et = searchView.findViewById(R.id.search_src_text);
         closeButton.setOnClickListener(v -> {
             String query = et.getText().toString();
-            searchView.onActionViewCollapsed();
-            searchViewItem.collapseActionView();
-            if (!"".equals(query)) {
-                et.setText("");
+            if ("".equals(query)) {
+                searchView.onActionViewCollapsed();
+                searchViewItem.collapseActionView();
                 photoPreferences.clearQuery();
                 presenter.downloadPhotoList(null, photoPreferences.getOrientation(),
                         photoPreferences.getCategory(), photoPreferences.getColorQuery(),
                         photoPreferences.getEditorsChoiceQuery(), photoPreferences.getOrder(), photoPreferences.getSafeSearchQuery());
+            } else {
+                et.setText("");
             }
         });
 
