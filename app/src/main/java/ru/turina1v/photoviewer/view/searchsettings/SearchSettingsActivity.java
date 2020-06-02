@@ -18,6 +18,7 @@ import com.suke.widget.SwitchButton;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -277,7 +278,12 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
 
     private void initCategorySpinner() {
         Gson gson = new Gson();
-        String json = JsonUtils.loadJSONFromAsset(this, "categories.json");
+        String json;
+        if (Locale.getDefault().getLanguage().equals("ru")){
+            json = JsonUtils.loadJSONFromAsset(this, "categories_ru.json");
+        } else {
+            json = JsonUtils.loadJSONFromAsset(this, "categories.json");
+        }
         Type listType = new TypeToken<List<Category>>() {
         }.getType();
         List<Category> categories = gson.fromJson(json, listType);
