@@ -251,7 +251,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         return true;
     }
 
-    private void setPreferencesResult(){
+    private void setPreferencesResult() {
         PhotoPreferences.PreferencesState currentPreferencesState = photoPreferences.getPreferenceState();
         setResult(currentPreferencesState.equals(initialPreferencesState) ? Activity.RESULT_CANCELED : Activity.RESULT_OK);
     }
@@ -288,7 +288,9 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Category category = adapter.getItem(position);
-                photoPreferences.saveCategory(category.getQuery());
+                if (category != null) {
+                    photoPreferences.saveCategory(category.getQuery());
+                }
                 photoPreferences.saveCategoryIndex(position);
             }
 

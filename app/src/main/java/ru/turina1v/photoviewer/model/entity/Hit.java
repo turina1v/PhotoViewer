@@ -119,9 +119,9 @@ public class Hit implements Parcelable, Comparable<Hit> {
 
     @Override
     public int compareTo(Hit otherHit) {
-        if (this.clickTimestamp > otherHit.clickTimestamp){
+        if (this.clickTimestamp > otherHit.clickTimestamp) {
             return -1;
-        } else if (this.clickTimestamp == otherHit.clickTimestamp){
+        } else if (this.clickTimestamp == otherHit.clickTimestamp) {
             return 0;
         } else {
             return 1;

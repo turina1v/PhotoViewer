@@ -33,10 +33,10 @@
     <string name="settings_safesearch">Safe search</string>
     <string name="load_info_network_error">Network connection error.\nPlease, check network settings.</string>
     <string name="load_info_server_error">Server connection error.\nPlease, try again later.</string>
-    <string name="load_info_server_error_short">Network connection error</string>
-    <string name="load_info_network_error_short">Server connection error</string>
+    <string name="load_info_network_error_short">Network connection error</string>
     <string name="load_info_no_clicked_photos">Last viewed photos will be displayed here.\n*Links to photos are stored for 24 hours</string>
     <string name="menu_share">Share</string>
     <string name="share_type">text/plain</string>
     <string name="share_title">Share</string>
+    <string name="pixabay_logo">Pixabay logo</string>
 </resources>

@@ -34,10 +34,10 @@
     <string name="settings_safesearch">Безопасный поиск</string>
     <string name="load_info_network_error">Произошла ошибка подключения к сети.\nПожалуйста, проверьте настройки подключения.</string>
     <string name="load_info_server_error">Произошла ошибка подключения к серверу.\nПожалуйста, попробуйте подключиться позднее.</string>
-    <string name="load_info_server_error_short">Ошибка подключения к серверу</string>
     <string name="load_info_network_error_short">Ошибка подключения к сети</string>
     <string name="load_info_no_clicked_photos">Здесь будут отображены просмотренные изображения.\n*Ссылки на фото хранятся 24 часа</string>
     <string name="share_type">text/plain</string>
     <string name="share_subject">Обои для телефона</string>
     <string name="share_title">Поделиться</string>
+    <string name="pixabay_logo">Pixabay logo</string>
 </resources>

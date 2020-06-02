@@ -126,7 +126,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
             public void onError(Exception e) {
                 loaderLayout.setVisibility(View.INVISIBLE);
                 errorTextView.setVisibility(View.VISIBLE);
-                if (e instanceof IOException){
+                if (e instanceof IOException) {
                     errorTextView.setText(R.string.load_info_network_error);
                 } else {
                     errorTextView.setText(R.string.load_info_server_error);

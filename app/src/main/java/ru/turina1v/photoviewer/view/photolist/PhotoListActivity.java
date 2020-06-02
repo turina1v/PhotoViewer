@@ -62,7 +62,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     @BindView(R.id.text_load_info)
     TextView loadInfoText;
 
-    PhotoListAdapter adapter;
+    private PhotoListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
             if ("".equals(query)) {
                 searchView.onActionViewCollapsed();
                 searchViewItem.collapseActionView();
-                if (photoPreferences.getQuery() != null){
+                if (photoPreferences.getQuery() != null) {
                     photoPreferences.clearQuery();
                     presenter.downloadPhotoList(null, photoPreferences.getOrientation(),
                             photoPreferences.getCategory(), photoPreferences.getColorQuery(),

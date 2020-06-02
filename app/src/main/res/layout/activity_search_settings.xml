@@ -27,13 +27,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginStart="@dimen/settings_side_margin"
                 android:layout_marginTop="@dimen/settings_side_margin"
                 android:layout_marginBottom="@dimen/line_margin"
                 android:text="@string/settings_orientation"
@@ -49,14 +49,14 @@
                     android:id="@+id/orientation_vertical_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/settings_side_margin"
+                    android:layout_marginStart="@dimen/settings_side_margin"
                     android:text="@string/settings_orientation_vertical" />
 
                 <RadioButton
                     android:id="@+id/orientation_horizontal_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/settings_side_margin"
+                    android:layout_marginStart="@dimen/settings_side_margin"
                     android:layout_marginTop="@dimen/line_half_margin"
                     android:text="@string/settings_orientation_horizontal" />
 
@@ -64,7 +64,7 @@
                     android:id="@+id/orientation_all_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/settings_side_margin"
+                    android:layout_marginStart="@dimen/settings_side_margin"
                     android:layout_marginTop="@dimen/line_half_margin"
                     android:layout_marginBottom="@dimen/line_margin"
                     android:checked="true"
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/line_margin"
-                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginStart="@dimen/settings_side_margin"
                 android:text="@string/settings_category"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_standard" />
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:spinnerMode="dialog"
                 android:layout_marginTop="@dimen/line_margin"
-                android:layout_marginRight="@dimen/settings_side_margin"
+                android:layout_marginEnd="@dimen/settings_side_margin"
                 android:layout_marginBottom="@dimen/line_margin" />
 
             <View
@@ -110,7 +110,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginStart="@dimen/settings_side_margin"
                 android:layout_marginTop="@dimen/line_margin"
                 android:layout_marginBottom="@dimen/line_margin"
                 android:text="@string/settings_color"
@@ -121,7 +121,7 @@
                 android:id="@+id/checkbox_transparent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginStart="@dimen/settings_side_margin"
                 android:layout_marginBottom="@dimen/line_half_margin"
                 android:text="@string/checkbox_transparent"/>
 
@@ -129,7 +129,7 @@
                 android:id="@+id/checkbox_grayscale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginStart="@dimen/settings_side_margin"
                 android:layout_marginBottom="@dimen/line_margin"
                 android:text="@string/checkbox_grayscale"/>
 
@@ -155,7 +155,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_marginRight="@dimen/color_switch_margin"
+                            android:layout_marginEnd="@dimen/color_switch_margin"
                             app:sb_checkline_width="2dp"
                             app:sb_uncheckcircle_width="2dp"
                             app:sb_background="@color/color_switch_background"
@@ -199,7 +199,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/color_switch_margin"
+                            android:layout_marginStart="@dimen/color_switch_margin"
                             app:sb_checkline_width="2dp"
                             app:sb_uncheckcircle_width="2dp"
                             app:sb_background="@color/color_switch_background"
@@ -222,7 +222,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_marginRight="@dimen/color_switch_margin"
+                            android:layout_marginEnd="@dimen/color_switch_margin"
                             app:sb_checkline_width="2dp"
                             app:sb_uncheckcircle_width="2dp"
                             app:sb_background="@color/color_switch_background"
@@ -266,7 +266,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/color_switch_margin"
+                            android:layout_marginStart="@dimen/color_switch_margin"
                             app:sb_checkline_width="2dp"
                             app:sb_uncheckcircle_width="2dp"
                             app:sb_background="@color/color_switch_background"
@@ -287,7 +287,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_marginRight="@dimen/color_switch_margin"
+                            android:layout_marginEnd="@dimen/color_switch_margin"
                             app:sb_checkline_width="2dp"
                             app:sb_uncheckcircle_width="2dp"
                             app:sb_background="@color/color_switch_background"
@@ -332,7 +332,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/color_switch_margin"
+                            android:layout_marginStart="@dimen/color_switch_margin"
                             app:sb_checkline_width="2dp"
                             app:sb_uncheckcircle_width="2dp"
                             app:sb_background="@color/color_switch_background"
@@ -348,6 +348,7 @@
                     android:orientation="vertical"
                     android:visibility="invisible"
                     android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="?android:colorBackground"
@@ -365,7 +366,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginStart="@dimen/settings_side_margin"
                 android:layout_marginTop="@dimen/line_margin"
                 android:text="@string/settings_order"
                 android:textColor="@android:color/black"
@@ -375,7 +376,7 @@
                 android:id="@+id/checkbox_editors_choice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginStart="@dimen/settings_side_margin"
                 android:layout_marginTop="@dimen/line_margin"
                 android:text="@string/checkbox_editors_choice"/>
 
@@ -389,7 +390,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:layout_marginLeft="@dimen/settings_side_margin"
+                    android:layout_marginStart="@dimen/settings_side_margin"
                     android:layout_marginTop="@dimen/line_half_margin"
                     android:text="@string/settings_order_popular" />
 
@@ -397,7 +398,7 @@
                     android:id="@+id/order_latest_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/settings_side_margin"
+                    android:layout_marginStart="@dimen/settings_side_margin"
                     android:layout_marginTop="@dimen/line_half_margin"
                     android:layout_marginBottom="@dimen/line_margin"
                     android:text="@string/settings_order_latest" />
@@ -415,7 +416,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/settings_side_margin"
+                android:layout_marginStart="@dimen/settings_side_margin"
                 android:layout_marginTop="@dimen/line_margin"
                 android:layout_marginBottom="@dimen/line_margin"
                 android:text="@string/settings_safesearch"
@@ -435,7 +436,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_marginRight="@dimen/color_switch_margin"
+                    android:layout_marginEnd="@dimen/color_switch_margin"
                     app:sb_checkline_width="2dp"
                     app:sb_uncheckcircle_width="2dp"
                     app:sb_background="@color/color_switch_background"
@@ -465,7 +466,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/color_switch_margin"                    />
+                    android:layout_marginStart="@dimen/color_switch_margin"                    />
             </LinearLayout>
 
         </LinearLayout>

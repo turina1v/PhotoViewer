@@ -22,7 +22,6 @@ import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.model.retrofit.PhotoLoader;
 import ru.turina1v.photoviewer.view.clickedphotos.ClickedPhotosView;
 
-@SuppressWarnings("FieldCanBeLocal")
 @InjectViewState
 public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     private static final String TAG = "ClickedPhotosPresenter";
@@ -32,7 +31,7 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     PhotoDatabase database;
     @Inject
     PhotoLoader loader;
-    private PhotoDao photoDao;
+    private final PhotoDao photoDao;
     private List<Hit> expiredPhotos = new ArrayList<>();
     private CompositeDisposable subscriptions;
 
@@ -53,9 +52,9 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
                         photos -> {
                             getViewState().updatePhotoRecycler(photos);
                             clearExpiredPhotos(expiredPhotos);
-                            },
+                        },
                         throwable -> {
-                            if (throwable instanceof IOException){
+                            if (throwable instanceof IOException) {
                                 getViewState().showErrorScreen(R.string.load_info_network_error);
                             } else {
                                 getViewState().showErrorScreen(R.string.load_info_server_error);
@@ -73,6 +72,7 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
             long photoExpireTime = rawPhotos.get(i).getExpireTimestamp() - SESSION_TIME_MILLIS;
             if (photoExpireTime < currentTime) {
                 expiredPhotos.add(rawPhotos.get(i));
+                //noinspection SuspiciousListRemoveInLoop
                 rawPhotos.remove(i);
             }
         }
@@ -87,6 +87,7 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
                         throwable -> Log.e(TAG, "onError", throwable)));
     }
 
+    @SuppressWarnings("unused")
     public void clearAll() {
         subscriptions.add(photoDao.deleteAll()
                 .subscribeOn(Schedulers.io())

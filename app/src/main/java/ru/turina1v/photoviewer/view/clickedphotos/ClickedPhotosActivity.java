@@ -42,7 +42,7 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
     @BindView(R.id.swipe_to_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    PhotoListAdapter adapter;
+    private PhotoListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

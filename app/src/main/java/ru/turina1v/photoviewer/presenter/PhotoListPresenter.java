@@ -43,7 +43,7 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                 .subscribe(
                         photoList -> getViewState().updatePhotoRecycler(photoList.getHits()),
                         throwable -> {
-                            if (throwable instanceof IOException){
+                            if (throwable instanceof IOException) {
                                 getViewState().showErrorScreen(R.string.load_info_network_error);
                             } else {
                                 getViewState().showErrorScreen(R.string.load_info_server_error);
@@ -73,7 +73,7 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                             isLoading = false;
                         },
                         throwable -> {
-                            if (throwable instanceof IOException){
+                            if (throwable instanceof IOException) {
                                 getViewState().showErrorToast(R.string.load_info_network_error_short);
                             }
                             Log.e(TAG, "onError", throwable);

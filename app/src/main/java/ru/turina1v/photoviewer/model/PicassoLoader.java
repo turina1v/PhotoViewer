@@ -9,8 +9,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
 import ru.turina1v.photoviewer.R;
 
 public class PicassoLoader {
@@ -23,26 +21,21 @@ public class PicassoLoader {
     }
 
     public static Single<Bitmap> downloadImage(String url) {
-        return Single.create(new SingleOnSubscribe<Bitmap>() {
+        return Single.create(emitter -> Picasso.get().load(url).into(new Target() {
             @Override
-            public void subscribe(SingleEmitter<Bitmap> emitter) throws Exception {
-                Picasso.get().load(url).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        emitter.onSuccess(bitmap);
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                        emitter.onError(e);
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                    }
-                });
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                emitter.onSuccess(bitmap);
             }
-        });
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        }));
     }
 }
