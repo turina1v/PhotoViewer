@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -66,14 +67,14 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     private List<Hit> preparePhotoList(List<Hit> rawPhotos) {
         Collections.sort(rawPhotos);
         long currentTime = System.currentTimeMillis();
-        for (int i = 0; i < rawPhotos.size(); i++) {
+        for (Iterator<Hit> iter = rawPhotos.iterator(); iter.hasNext(); ) {
+            Hit photo = iter.next();
             // создается запас времени в 10 мин, чтобы исключить ситуацию, когда при открытии списка ссылка еще действительна,
             // а при детальном просмотре фото - уже нет:
-            long photoExpireTime = rawPhotos.get(i).getExpireTimestamp() - SESSION_TIME_MILLIS;
+            long photoExpireTime = photo.getExpireTimestamp() - SESSION_TIME_MILLIS;
             if (photoExpireTime < currentTime) {
-                expiredPhotos.add(rawPhotos.get(i));
-                //noinspection SuspiciousListRemoveInLoop
-                rawPhotos.remove(i);
+                expiredPhotos.add(photo);
+                iter.remove();
             }
         }
         return rawPhotos;
