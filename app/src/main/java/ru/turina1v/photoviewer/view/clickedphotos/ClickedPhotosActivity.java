@@ -1,6 +1,7 @@
 package ru.turina1v.photoviewer.view.clickedphotos;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -51,6 +52,7 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
         initToolbar();
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.getPhotosFromDB());
         loadInfoText.setText(R.string.load_info_images_loading);
+        loadInfoText.setTextColor(Color.BLACK);
         initPhotoRecycler();
         //presenter.clearAll();
     }
@@ -83,6 +85,7 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
         swipeRefreshLayout.setRefreshing(false);
         progressBar.setVisibility(View.GONE);
         if (photos.size() == 0) {
+            loadInfoText.setVisibility(View.VISIBLE);
             loadInfoText.setText(R.string.load_info_no_clicked_photos);
         } else {
             loadInfoText.setVisibility(View.GONE);

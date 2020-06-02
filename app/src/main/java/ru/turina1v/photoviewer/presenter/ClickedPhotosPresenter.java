@@ -43,6 +43,7 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     }
 
     public void getPhotosFromDB() {
+        expiredPhotos.clear();
         getViewState().showLoader();
         subscriptions.add(photoDao.getAll()
                 .map(this::preparePhotoList)
