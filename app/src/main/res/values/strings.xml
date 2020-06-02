@@ -24,7 +24,8 @@
     <string name="menu_search">Search</string>
     <string name="menu_last_viewed">Last viewed</string>
     <string name="menu_about">About app</string>
-    <string name="share_subject">Wallpaper for cellphones</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_delete_clicked_photos">Delete viewed photos</string>
     <string name="checkbox_editors_choice">Editor\'s choice </string>
     <string name="checkbox_grayscale">Grayscale</string>
     <string name="checkbox_transparent">Transparent</string>
@@ -35,7 +36,7 @@
     <string name="load_info_server_error">Server connection error.\nPlease, try again later.</string>
     <string name="load_info_network_error_short">Network connection error</string>
     <string name="load_info_no_clicked_photos">Last viewed photos will be displayed here.\n*Links to photos are stored for 24 hours</string>
-    <string name="menu_share">Share</string>
+    <string name="share_subject">Wallpaper for cellphones</string>
     <string name="share_type">text/plain</string>
     <string name="share_title">Share</string>
     <string name="pixabay_logo">Pixabay logo</string>

@@ -26,6 +26,7 @@
     <string name="menu_last_viewed">Последние просмотренные</string>
     <string name="menu_about">О приложении</string>
     <string name="menu_share">Поделиться</string>
+    <string name="menu_delete_clicked_photos">Удалить просмотренные</string>
     <string name="checkbox_editors_choice">Выбор редакции</string>
     <string name="checkbox_grayscale">Черно-белый</string>
     <string name="checkbox_transparent">Прозрачный</string>

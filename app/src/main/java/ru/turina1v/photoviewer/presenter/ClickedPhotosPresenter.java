@@ -93,7 +93,10 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
         subscriptions.add(photoDao.deleteAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                        deleted -> Log.e(TAG, "onSuccess, items deleted"),
+                        deleted -> {
+                            getViewState().updatePhotoRecycler(null);
+                            Log.e(TAG, "onSuccess, items deleted");
+                        },
                         throwable -> Log.e(TAG, "onError", throwable)));
     }
 }

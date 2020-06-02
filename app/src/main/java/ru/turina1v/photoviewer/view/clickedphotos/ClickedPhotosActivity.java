@@ -3,6 +3,9 @@ package ru.turina1v.photoviewer.view.clickedphotos;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,6 +47,8 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
 
     private PhotoListAdapter adapter;
 
+    private boolean isPhotoListEmpty;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +59,23 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
         loadInfoText.setText(R.string.load_info_images_loading);
         loadInfoText.setTextColor(Color.BLACK);
         initPhotoRecycler();
-        //presenter.clearAll();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_toolbar_clicked, menu);
+        MenuItem deleteItem = menu.findItem(R.id.menu_delete_clicked_photos);
+        if (isPhotoListEmpty){
+            deleteItem.setVisible(false);
+        } else {
+            deleteItem.setVisible(true);
+        }
+        deleteItem.setOnMenuItemClickListener(item -> {
+            presenter.clearAll();
+            return false;
+        });
+        return true;
     }
 
     @Override
@@ -84,10 +105,15 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
     public void updatePhotoRecycler(List<Hit> photos) {
         swipeRefreshLayout.setRefreshing(false);
         progressBar.setVisibility(View.GONE);
-        if (photos.size() == 0) {
+        if (photos == null || photos.size() == 0) {
+            isPhotoListEmpty = true;
+            invalidateOptionsMenu();
             loadInfoText.setVisibility(View.VISIBLE);
             loadInfoText.setText(R.string.load_info_no_clicked_photos);
+            recyclerView.setVisibility(View.INVISIBLE);
         } else {
+            isPhotoListEmpty = false;
+            invalidateOptionsMenu();
             loadInfoText.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             adapter.setPhotosList(photos);
