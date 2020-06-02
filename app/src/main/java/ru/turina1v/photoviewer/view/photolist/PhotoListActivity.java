@@ -72,8 +72,8 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
         ButterKnife.bind(this);
         photoPreferences.clearAll();
         initToolbar();
-        swipeRefreshLayout.setOnRefreshListener(() -> presenter.downloadPhotoList(null, null, null, null,
-                null, null, photoPreferences.getSafeSearchQuery()));
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.downloadPhotoList(photoPreferences.getQuery(), photoPreferences.getOrientation(), photoPreferences.getCategory(), photoPreferences.getColorQuery(),
+                photoPreferences.getEditorsChoiceQuery(), photoPreferences.getOrder(), photoPreferences.getSafeSearchQuery()));
         loadInfoText.setTextColor(Color.BLACK);
         loadInfoText.setText(R.string.load_info_images_loading);
         initPhotoRecycler();
