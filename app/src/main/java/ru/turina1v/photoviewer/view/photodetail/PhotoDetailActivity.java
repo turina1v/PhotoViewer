@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -82,10 +85,28 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         Intent intent = getIntent();
         Hit photo = intent.getParcelableExtra(EXTRA_PHOTO);
         boolean isSetExpired = intent.getBooleanExtra(EXTRA_IS_SET_EXPIRED, true);
-        largePhotoUrl = photo.getLargeImageUrl();
-        swipeRefreshLayout.setOnRefreshListener(() -> showPhoto(largePhotoUrl));
-        presenter.showDetailPhoto(largePhotoUrl);
-        presenter.savePhotoToDb(photo, isSetExpired);
+        if (photo != null) {
+            largePhotoUrl = photo.getLargeImageUrl();
+            presenter.showDetailPhoto(largePhotoUrl);
+            presenter.savePhotoToDb(photo, isSetExpired);
+            swipeRefreshLayout.setOnRefreshListener(() -> showPhoto(largePhotoUrl));
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_toolbar_detail, menu);
+        MenuItem searchViewItem = menu.findItem(R.id.menu_share);
+        searchViewItem.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType(getString(R.string.share_type));
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+            intent.putExtra(Intent.EXTRA_TEXT, largePhotoUrl);
+            startActivity(Intent.createChooser(intent, getString(R.string.share_title)));
+            return false;
+        });
+        return true;
     }
 
     @Override

@@ -106,7 +106,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_toolbar, menu);
+        inflater.inflate(R.menu.menu_toolbar_main, menu);
 
         MenuItem searchViewItem = menu.findItem(R.id.menu_search);
         SearchView searchView = (SearchView) searchViewItem.getActionView();

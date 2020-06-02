@@ -25,6 +25,7 @@
     <string name="menu_search">Search</string>
     <string name="menu_last_viewed">Последние просмотренные</string>
     <string name="menu_about">О приложении</string>
+    <string name="menu_share">Поделиться</string>
     <string name="checkbox_editors_choice">Выбор редакции</string>
     <string name="checkbox_grayscale">Черно-белый</string>
     <string name="checkbox_transparent">Прозрачный</string>
@@ -36,4 +37,7 @@
     <string name="load_info_server_error_short">Ошибка подключения к серверу</string>
     <string name="load_info_network_error_short">Ошибка подключения к сети</string>
     <string name="load_info_no_clicked_photos">Здесь будут отображены просмотренные изображения.\n*Ссылки на фото хранятся 24 часа</string>
+    <string name="share_type">text/plain</string>
+    <string name="share_subject">Обои для телефона</string>
+    <string name="share_title">Поделиться</string>
 </resources>
