@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.turina1v.photoviewer.R;
-import ru.turina1v.photoviewer.model.PicassoLoader;
+import ru.turina1v.photoviewer.model.ImageLoader;
 import ru.turina1v.photoviewer.model.entity.Hit;
 
 public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.ImageViewHolder> {
@@ -47,7 +47,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.Imag
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        PicassoLoader.loadImage(holder.imageView, photos.get(position).getWebFormatUrl());
+        ImageLoader.loadImage(holder.imageView, photos.get(position).getWebFormatUrl());
         holder.imageView.setOnClickListener(v -> listener.onPhotoClick(photos.get(position)));
     }
 

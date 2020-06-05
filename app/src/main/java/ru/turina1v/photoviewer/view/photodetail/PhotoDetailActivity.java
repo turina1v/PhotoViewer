@@ -2,6 +2,7 @@ package ru.turina1v.photoviewer.view.photodetail;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,17 +34,21 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 import ru.turina1v.photoviewer.R;
-import ru.turina1v.photoviewer.model.PicassoLoader;
+import ru.turina1v.photoviewer.model.ImageLoader;
 import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.presenter.PhotoDetailPresenter;
+import ru.turina1v.photoviewer.view.cropimage.CropImageActivity;
 
 public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDetailView {
     public static final String EXTRA_PHOTO = "ru.turina1v.photoviewer.EXTRA_PHOTO";
     public static final String EXTRA_IS_SET_EXPIRED = "ru.turina1v.photoviewer.EXTRA_IS_SET_EXPIRED";
+    private final int requestCodeCropImage = 222;
 
     @InjectPresenter
     PhotoDetailPresenter presenter;
@@ -62,7 +67,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     SwipeRefreshLayout swipeRefreshLayout;
 
     private CompositeDisposable subscriptions = new CompositeDisposable();
-    private String largePhotoUrl;
+    private Hit photo;
 
     @OnClick({R.id.button_save, R.id.button_set_wallpaper})
     public void onClickButton(View view) {
@@ -83,13 +88,12 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         initToolbar();
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        Hit photo = intent.getParcelableExtra(EXTRA_PHOTO);
+        photo = intent.getParcelableExtra(EXTRA_PHOTO);
         boolean isSetExpired = intent.getBooleanExtra(EXTRA_IS_SET_EXPIRED, true);
         if (photo != null) {
-            largePhotoUrl = photo.getLargeImageUrl();
-            presenter.showDetailPhoto(largePhotoUrl);
+            presenter.showDetailPhoto(photo.getLargeImageUrl());
             presenter.savePhotoToDb(photo, isSetExpired);
-            swipeRefreshLayout.setOnRefreshListener(() -> showPhoto(largePhotoUrl));
+            swipeRefreshLayout.setOnRefreshListener(() -> showPhoto(photo.getLargeImageUrl()));
         }
     }
 
@@ -97,13 +101,22 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_toolbar_detail, menu);
-        MenuItem searchViewItem = menu.findItem(R.id.menu_share);
-        searchViewItem.setOnMenuItemClickListener(item -> {
+
+        MenuItem shareItem = menu.findItem(R.id.menu_share);
+        shareItem.setOnMenuItemClickListener(item -> {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType(getString(R.string.share_type));
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
-            intent.putExtra(Intent.EXTRA_TEXT, largePhotoUrl);
+            intent.putExtra(Intent.EXTRA_TEXT, photo.getLargeImageUrl());
             startActivity(Intent.createChooser(intent, getString(R.string.share_title)));
+            return false;
+        });
+
+        MenuItem editItem = menu.findItem(R.id.menu_edit);
+        editItem.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(PhotoDetailActivity.this, CropImageActivity.class);
+            intent.putExtra(EXTRA_PHOTO, photo);
+            startActivityForResult(intent, requestCodeCropImage);
             return false;
         });
         return true;
@@ -114,7 +127,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         swipeRefreshLayout.setRefreshing(false);
         errorTextView.setVisibility(View.GONE);
         loaderLayout.setVisibility(View.VISIBLE);
-        PicassoLoader.loadImage(photoDetailView, photoUrl, new Callback() {
+        ImageLoader.loadImage(photoDetailView, photoUrl, new Callback() {
             @Override
             public void onSuccess() {
                 loaderLayout.setVisibility(View.INVISIBLE);
@@ -136,26 +149,36 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     }
 
     private void saveToGallery() {
-        subscriptions.add(PicassoLoader.downloadImage(largePhotoUrl).subscribe(
-                bitmap -> {
-                    MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, String.valueOf(System.currentTimeMillis()), "");
-                    Toast.makeText(this, R.string.toast_saved_to_gallery, Toast.LENGTH_LONG).show();
-                },
-                throwable -> Log.e("", "saveToGallery", throwable)
-        ));
+        subscriptions.add(ImageLoader.downloadImage(photo.getLargeImageUrl())
+                .doOnSuccess(bitmap -> MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, String.valueOf(System.currentTimeMillis()), ""))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        bitmap -> Toast.makeText(this, R.string.toast_saved_to_gallery, Toast.LENGTH_LONG).show(),
+                        throwable -> Log.e("", "saveToGallery", throwable)
+                ));
     }
 
     @SuppressLint("MissingPermission")
     private void setWallpaper() {
+        ProgressDialog progressBar = new ProgressDialog(this);
+        progressBar.setMessage(getString(R.string.progress_set_wallpaper));
+        progressBar.show();
         WallpaperManager wm = WallpaperManager.getInstance(this);
-        subscriptions.add(PicassoLoader.downloadImage(largePhotoUrl).subscribe(
-                bitmap -> {
-                    wm.setBitmap(bitmap);
-                    Toast.makeText(this, R.string.toast_wallpaper_set, Toast.LENGTH_LONG).show();
-                },
-                throwable -> Log.e("", "saveToGallery", throwable)
-        ));
-
+        subscriptions.add(ImageLoader.downloadImage(photo.getLargeImageUrl())
+                .doOnSuccess(wm::setBitmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        bitmap -> {
+                            Toast.makeText(this, R.string.toast_wallpaper_set, Toast.LENGTH_LONG).show();
+                            progressBar.dismiss();
+                        },
+                        throwable -> {
+                            Log.e("", "saveToGallery", throwable);
+                            progressBar.dismiss();
+                        }
+                ));
     }
 
     private void requestGalleryPermission() {

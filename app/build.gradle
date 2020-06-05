@@ -81,4 +81,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 }

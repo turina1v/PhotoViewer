@@ -41,4 +41,6 @@
     <string name="share_subject">Обои для телефона</string>
     <string name="share_title">Поделиться</string>
     <string name="pixabay_logo">Pixabay logo</string>
+    <string name="toolbar_crop_image">Crop image</string>
+    <string name="progress_set_wallpaper">Установка обоев</string>
 </resources>
