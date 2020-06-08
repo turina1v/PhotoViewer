@@ -159,6 +159,9 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
                 controlButtonsLayout.setVisibility(View.INVISIBLE);
                 cropLayout.setVisibility(View.VISIBLE);
                 invalidateOptionsMenu();
+                isResultButtonPressed = false;
+                isImageEdited = false;
+                isShowResultLayout = true;
                 break;
             case R.id.menu_reset:
                 isMissCropWindowListener = true;
