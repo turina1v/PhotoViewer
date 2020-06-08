@@ -33,7 +33,7 @@ public class PhotoDetailPresenter extends MvpPresenter<PhotoDetailView> {
     }
 
     public void showDetailPhoto(String photoUrl) {
-        getViewState().showPhoto(photoUrl);
+        getViewState().showDetailPhoto(photoUrl);
     }
 
     public void savePhotoToDb(Hit photo, boolean isSetExpired) {

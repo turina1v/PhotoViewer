@@ -43,4 +43,6 @@
     <string name="pixabay_logo">Pixabay logo</string>
     <string name="toolbar_crop_image">Crop image</string>
     <string name="progress_set_wallpaper">Установка обоев</string>
+    <string name="menu_reset">Reset</string>
+    <string name="menu_apply">Apply</string>
 </resources>

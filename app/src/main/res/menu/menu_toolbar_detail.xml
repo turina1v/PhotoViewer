@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_edit"
         android:title="@string/menu_share"
         android:visible="true"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_share"
@@ -15,4 +15,26 @@
         android:title="@string/menu_share"
         android:visible="true"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_reset"
+        android:icon="@drawable/ic_reset"
+        android:title="@string/menu_reset"
+        android:visible="false"
+
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_apply_enabled"
+        android:icon="@drawable/ic_apply_enabled"
+        android:title="@string/menu_apply"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_apply_blocked"
+        android:icon="@drawable/ic_apply_blocked"
+        android:title="@string/menu_apply"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>
