@@ -82,17 +82,8 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     }
 
     @Override
-    protected void onResume() {
-        invalidateOptionsMenu();
-        super.onResume();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == requestCodeSettings && resultCode == Activity.RESULT_OK) {
-            if (!photoPreferences.getCategory().equals(CATEGORY_ALL)) {
-                photoPreferences.clearQuery();
-            }
             adapter.clearPhotosList();
             presenter.resetPage();
             presenter.downloadPhotoList(photoPreferences.getQuery(), photoPreferences.getOrientation(),
