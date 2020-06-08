@@ -166,6 +166,8 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
                 currentBitmap = initialBitmap;
                 isImageEdited = false;
                 invalidateOptionsMenu();
+                resultLayout.setVisibility(View.INVISIBLE);
+                cropLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.menu_apply_enabled:
                 isMissCropWindowListener = true;
@@ -177,6 +179,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
                 isImageEdited = false;
                 initialBitmap = currentBitmap;
                 invalidateOptionsMenu();
+                resultLayout.setVisibility(View.INVISIBLE);
                 break;
         }
         return super.onOptionsItemSelected(item);
