@@ -19,7 +19,6 @@ public class PhotoPreferences {
     public static final String ORIENTATION_ALL = "all";
 
     private final String PREFERENCES_CATEGORY = "preferences_category";
-    public static final String CATEGORY_ALL = "all";
     private final String PREFERENCES_CATEGORY_INDEX = "preferences_category_index";
 
     public static final String COLOR_RED = "red";
@@ -75,6 +74,12 @@ public class PhotoPreferences {
         editor.apply();
     }
 
+    public void clearOrientation() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(PREFERENCES_ORIENTATION);
+        editor.apply();
+    }
+
     public String getOrientation() {
         return preferences.getString(PREFERENCES_ORIENTATION, null);
     }
@@ -82,6 +87,12 @@ public class PhotoPreferences {
     public void saveCategory(String category) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREFERENCES_CATEGORY, category);
+        editor.apply();
+    }
+
+    public void clearCategory() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(PREFERENCES_CATEGORY);
         editor.apply();
     }
 

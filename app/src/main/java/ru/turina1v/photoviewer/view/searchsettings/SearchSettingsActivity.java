@@ -142,7 +142,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
                     photoPreferences.saveOrientation(ORIENTATION_HORIZONTAL);
                     break;
                 case R.id.orientation_all_radiobutton:
-                    photoPreferences.saveOrientation(ORIENTATION_ALL);
+                    photoPreferences.clearOrientation();
                     break;
             }
         }
@@ -255,6 +255,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
     private void setPreferencesResult() {
         PhotoPreferences.PreferencesState currentPreferencesState = photoPreferences.getPreferenceState();
         setResult(currentPreferencesState.equals(initialPreferencesState) ? Activity.RESULT_CANCELED : Activity.RESULT_OK);
+
     }
 
     private void setCheckedOrientation() {
@@ -295,7 +296,11 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Category category = adapter.getItem(position);
                 if (category != null) {
-                    photoPreferences.saveCategory(category.getQuery());
+                    if ("all".equals(category.getQuery())) {
+                        photoPreferences.clearCategory();
+                    } else {
+                        photoPreferences.saveCategory(category.getQuery());
+                    }
                 }
                 photoPreferences.saveCategoryIndex(position);
             }
