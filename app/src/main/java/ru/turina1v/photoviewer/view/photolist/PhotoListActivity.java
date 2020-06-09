@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,8 +42,6 @@ import ru.turina1v.photoviewer.view.clickedphotos.ClickedPhotosActivity;
 import ru.turina1v.photoviewer.view.photodetail.PhotoDetailActivity;
 import ru.turina1v.photoviewer.view.searchsettings.SearchSettingsActivity;
 
-import static ru.turina1v.photoviewer.model.PhotoPreferences.CATEGORY_ALL;
-
 public class PhotoListActivity extends MvpAppCompatActivity implements PhotoListView, OnPhotoClickListener {
     private final int requestCodeSettings = 111;
 
@@ -63,6 +62,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     TextView loadInfoText;
 
     private PhotoListAdapter adapter;
+    private boolean isBackPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +154,24 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
             return false;
         });
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isBackPressed) {
+            finish();
+        } else {
+            isBackPressed = true;
+            Toast.makeText(this, R.string.exit, Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    isBackPressed = false;
+                }
+            }, 3000);
+        }
     }
 
     @Override

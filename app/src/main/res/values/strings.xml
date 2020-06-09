@@ -44,4 +44,5 @@
     <string name="progress_set_wallpaper">Setting wallpaper</string>
     <string name="menu_reset">Reset</string>
     <string name="menu_apply">Apply</string>
+    <string name="exit">Please click BACK again to exit</string>
 </resources>
