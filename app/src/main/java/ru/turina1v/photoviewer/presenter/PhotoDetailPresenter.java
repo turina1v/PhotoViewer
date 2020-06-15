@@ -16,6 +16,7 @@ import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.view.photodetail.PhotoDetailView;
 
 @InjectViewState
+@SuppressWarnings("FieldCanBeLocal")
 public class PhotoDetailPresenter extends MvpPresenter<PhotoDetailView> {
     private static final String TAG = "PictureDetailPresenter";
     private final long FULL_DAY_MILLIS = 86_400_000; //24 часа в милисекундах, срок хранения ссылок в базе
@@ -32,12 +33,12 @@ public class PhotoDetailPresenter extends MvpPresenter<PhotoDetailView> {
     }
 
     public void showDetailPhoto(String photoUrl) {
-        getViewState().showPhoto(photoUrl);
+        getViewState().showDetailPhoto(photoUrl);
     }
 
     public void savePhotoToDb(Hit photo, boolean isSetExpired) {
         photo.setClickTimestamp(System.currentTimeMillis());
-        if (isSetExpired){
+        if (isSetExpired) {
             photo.setExpireTimestamp(System.currentTimeMillis() + FULL_DAY_MILLIS);
         }
         subscriptions.add(photoDao.insertPhoto(photo).subscribeOn(Schedulers.io())

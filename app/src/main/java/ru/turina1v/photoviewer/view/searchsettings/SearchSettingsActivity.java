@@ -18,6 +18,7 @@ import com.suke.widget.SwitchButton;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -141,7 +142,7 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
                     photoPreferences.saveOrientation(ORIENTATION_HORIZONTAL);
                     break;
                 case R.id.orientation_all_radiobutton:
-                    photoPreferences.saveOrientation(ORIENTATION_ALL);
+                    photoPreferences.clearOrientation();
                     break;
             }
         }
@@ -251,9 +252,10 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
         return true;
     }
 
-    private void setPreferencesResult(){
+    private void setPreferencesResult() {
         PhotoPreferences.PreferencesState currentPreferencesState = photoPreferences.getPreferenceState();
         setResult(currentPreferencesState.equals(initialPreferencesState) ? Activity.RESULT_CANCELED : Activity.RESULT_OK);
+
     }
 
     private void setCheckedOrientation() {
@@ -277,7 +279,12 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
 
     private void initCategorySpinner() {
         Gson gson = new Gson();
-        String json = JsonUtils.loadJSONFromAsset(this, "categories.json");
+        String json;
+        if (Locale.getDefault().getLanguage().equals("ru")){
+            json = JsonUtils.loadJSONFromAsset(this, "categories_ru.json");
+        } else {
+            json = JsonUtils.loadJSONFromAsset(this, "categories.json");
+        }
         Type listType = new TypeToken<List<Category>>() {
         }.getType();
         List<Category> categories = gson.fromJson(json, listType);
@@ -288,7 +295,13 @@ public class SearchSettingsActivity extends MvpAppCompatActivity implements Swit
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Category category = adapter.getItem(position);
-                photoPreferences.saveCategory(category.getQuery());
+                if (category != null) {
+                    if ("all".equals(category.getQuery())) {
+                        photoPreferences.clearCategory();
+                    } else {
+                        photoPreferences.saveCategory(category.getQuery());
+                    }
+                }
                 photoPreferences.saveCategoryIndex(position);
             }
 

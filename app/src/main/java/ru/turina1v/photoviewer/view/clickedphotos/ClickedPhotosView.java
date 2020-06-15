@@ -10,5 +10,9 @@ public interface ClickedPhotosView extends MvpView {
 
     void updatePhotoRecycler(List<Hit> photos);
 
+    void showLoader();
+
+    void showErrorScreen(int stringId);
+
     void openDetailPhoto(Hit photo);
 }

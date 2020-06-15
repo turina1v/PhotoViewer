@@ -1,12 +1,20 @@
 package ru.turina1v.photoviewer.view.clickedphotos;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -28,10 +36,18 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.layout_loader)
+    LinearLayout loaderLayout;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
     @BindView(R.id.text_load_info)
     TextView loadInfoText;
+    @BindView(R.id.swipe_to_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
-    PhotoListAdapter adapter;
+    private PhotoListAdapter adapter;
+
+    private boolean isPhotoListEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +55,27 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
         setContentView(R.layout.activity_photo_list);
         ButterKnife.bind(this);
         initToolbar();
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.getPhotosFromDB());
+        loadInfoText.setText(R.string.load_info_images_loading);
+        loadInfoText.setTextColor(Color.BLACK);
         initPhotoRecycler();
-        //presenter.clearAll();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_toolbar_clicked, menu);
+        MenuItem deleteItem = menu.findItem(R.id.menu_delete_clicked_photos);
+        if (isPhotoListEmpty){
+            deleteItem.setVisible(false);
+        } else {
+            deleteItem.setVisible(true);
+        }
+        deleteItem.setOnMenuItemClickListener(item -> {
+            presenter.clearAll();
+            return false;
+        });
+        return true;
     }
 
     @Override
@@ -68,7 +103,38 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
 
     @Override
     public void updatePhotoRecycler(List<Hit> photos) {
-        adapter.setPhotosList(photos);
+        swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
+        if (photos == null || photos.size() == 0) {
+            isPhotoListEmpty = true;
+            invalidateOptionsMenu();
+            loadInfoText.setVisibility(View.VISIBLE);
+            loadInfoText.setText(R.string.load_info_no_clicked_photos);
+            recyclerView.setVisibility(View.INVISIBLE);
+        } else {
+            isPhotoListEmpty = false;
+            invalidateOptionsMenu();
+            loadInfoText.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            adapter.setPhotosList(photos);
+        }
+    }
+
+    @Override
+    public void showLoader() {
+        progressBar.setVisibility(View.VISIBLE);
+        loadInfoText.setVisibility(View.VISIBLE);
+        loadInfoText.setText(R.string.load_info_images_loading);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showErrorScreen(int stringId) {
+        swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
+        loadInfoText.setVisibility(View.VISIBLE);
+        loadInfoText.setText(stringId);
+        recyclerView.setVisibility(View.INVISIBLE);
     }
 
     @Override

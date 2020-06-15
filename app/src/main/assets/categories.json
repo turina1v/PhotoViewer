@@ -1,86 +1,86 @@
 [
   {
-    "name": "Все категории",
+    "name": "All",
     "query": "all"
   },
   {
-    "name": "Фон/рельефы",
-    "query": "backgrounds"
-  },
-  {
-    "name": "Красота/мода",
-    "query": "fashion"
-  },
-  {
-    "name": "Природа",
-    "query": "nature"
-  },
-  {
-    "name": "Наука/технологии",
-    "query": "science"
-  },
-  {
-    "name": "Образование",
-    "query": "education"
-  },
-  {
-    "name": "Чувства",
-    "query": "feelings"
-  },
-  {
-    "name": "Здоровье/медицина",
-    "query": "health"
-  },
-  {
-    "name": "Люди",
-    "query": "people"
-  },
-  {
-    "name": "Религия",
-    "query": "religion"
-  },
-  {
-    "name": "Площади/памятники",
-    "query": "places"
-  },
-  {
-    "name": "Животные",
+    "name": "Animals",
     "query": "animals"
   },
   {
-    "name": "Промышленность",
-    "query": "industry"
-  },
-  {
-    "name": "Компьютеры/связь",
-    "query": "computer"
-  },
-  {
-    "name": "Еда/напитки",
-    "query": "food"
-  },
-  {
-    "name": "Спорт",
-    "query": "sports"
-  },
-  {
-    "name": "Транспорт/перевозки",
-    "query": "transportation"
-  },
-  {
-    "name": "Путешествия/отпуск",
-    "query": "travel"
-  },
-  {
-    "name": "Архитектура/Здания",
+    "name": "Architecture/Buildings",
     "query": "buildings"
   },
   {
-    "name": "Музыка",
+    "name": "Backgrounds/Textures",
+    "query": "backgrounds"
+  },
+  {
+    "name": "Beauty/fashion",
+    "query": "fashion"
+  },
+  {
+    "name": "Business/Finance",
+    "query": "business"
+  },
+  {
+    "name": "Computer/communication",
+    "query": "computer"
+  },
+  {
+    "name": "Education",
+    "query": "education"
+  },
+  {
+    "name": "Emotions",
+    "query": "feelings"
+  },
+  {
+    "name": "Food/Drink",
+    "query": "food"
+  },
+  {
+    "name": "Health/Medical",
+    "query": "health"
+  },
+  {
+    "name": "Industry/Craft",
+    "query": "industry"
+  },
+  {
+    "name": "Music",
     "query": "music"
   },
   {
-    "name": "Бизнес/финансы",
-    "query": "business"
+    "name": "Nature/Landscapes",
+    "query": "nature"
+  },
+  {
+    "name": "People",
+    "query": "people"
+  },
+  {
+    "name": "Places/Monuments",
+    "query": "places"
+  },
+  {
+    "name": "Religion",
+    "query": "religion"
+  },
+  {
+    "name": "Science/Technology",
+    "query": "science"
+  },
+  {
+    "name": "Sports",
+    "query": "sports"
+  },
+  {
+    "name": "Transportation/Traffic",
+    "query": "transportation"
+  },
+  {
+    "name": "Travel/Vacation",
+    "query": "travel"
   }
 ]

@@ -2,8 +2,10 @@ package ru.turina1v.photoviewer.presenter;
 
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,13 +16,13 @@ import io.reactivex.schedulers.Schedulers;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.turina1v.photoviewer.App;
+import ru.turina1v.photoviewer.R;
 import ru.turina1v.photoviewer.model.database.PhotoDao;
 import ru.turina1v.photoviewer.model.database.PhotoDatabase;
 import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.model.retrofit.PhotoLoader;
 import ru.turina1v.photoviewer.view.clickedphotos.ClickedPhotosView;
 
-@SuppressWarnings("FieldCanBeLocal")
 @InjectViewState
 public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     private static final String TAG = "ClickedPhotosPresenter";
@@ -30,7 +32,7 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     PhotoDatabase database;
     @Inject
     PhotoLoader loader;
-    private PhotoDao photoDao;
+    private final PhotoDao photoDao;
     private List<Hit> expiredPhotos = new ArrayList<>();
     private CompositeDisposable subscriptions;
 
@@ -41,6 +43,8 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     }
 
     public void getPhotosFromDB() {
+        expiredPhotos.clear();
+        getViewState().showLoader();
         subscriptions.add(photoDao.getAll()
                 .map(this::preparePhotoList)
                 .subscribeOn(Schedulers.io())
@@ -49,20 +53,28 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
                         photos -> {
                             getViewState().updatePhotoRecycler(photos);
                             clearExpiredPhotos(expiredPhotos);
-                            },
-                        throwable -> Log.e(TAG, "onError", throwable)));
+                        },
+                        throwable -> {
+                            if (throwable instanceof IOException) {
+                                getViewState().showErrorScreen(R.string.load_info_network_error);
+                            } else {
+                                getViewState().showErrorScreen(R.string.load_info_server_error);
+                            }
+                            Log.e(TAG, "onError", throwable);
+                        }));
     }
 
     private List<Hit> preparePhotoList(List<Hit> rawPhotos) {
         Collections.sort(rawPhotos);
         long currentTime = System.currentTimeMillis();
-        for (int i = 0; i < rawPhotos.size(); i++) {
+        for (Iterator<Hit> iter = rawPhotos.iterator(); iter.hasNext(); ) {
+            Hit photo = iter.next();
             // создается запас времени в 10 мин, чтобы исключить ситуацию, когда при открытии списка ссылка еще действительна,
             // а при детальном просмотре фото - уже нет:
-            long photoExpireTime = rawPhotos.get(i).getExpireTimestamp() - SESSION_TIME_MILLIS;
+            long photoExpireTime = photo.getExpireTimestamp() - SESSION_TIME_MILLIS;
             if (photoExpireTime < currentTime) {
-                expiredPhotos.add(rawPhotos.get(i));
-                rawPhotos.remove(i);
+                expiredPhotos.add(photo);
+                iter.remove();
             }
         }
         return rawPhotos;
@@ -76,11 +88,15 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
                         throwable -> Log.e(TAG, "onError", throwable)));
     }
 
+    @SuppressWarnings("unused")
     public void clearAll() {
         subscriptions.add(photoDao.deleteAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                        deleted -> Log.e(TAG, "onSuccess, items deleted"),
+                        deleted -> {
+                            getViewState().updatePhotoRecycler(null);
+                            Log.e(TAG, "onSuccess, items deleted");
+                        },
                         throwable -> Log.e(TAG, "onError", throwable)));
     }
 }

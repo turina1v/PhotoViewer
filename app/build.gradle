@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "ru.turina1v.photoviewer"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -52,6 +52,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:2.2.8"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
 
+    //noinspection AnnotationProcessorOnCompilePath
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 
@@ -80,4 +81,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 }

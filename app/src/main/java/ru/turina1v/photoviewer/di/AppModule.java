@@ -23,7 +23,7 @@ public class AppModule {
 
     @Singleton
     @Provides
-    PhotoDatabase provideDatabase(Context context){
+    PhotoDatabase provideDatabase(Context context) {
         return Room.databaseBuilder(context,
                 PhotoDatabase.class, "photo_database")
                 .fallbackToDestructiveMigration()
@@ -32,19 +32,19 @@ public class AppModule {
 
     @Singleton
     @Provides
-    Context provideContext(){
+    Context provideContext() {
         return application;
     }
 
     @Singleton
     @Provides
-    PhotoLoader providePhotoLoader(){
+    PhotoLoader providePhotoLoader() {
         return new PhotoLoader();
     }
 
     @Singleton
     @Provides
-    PhotoPreferences providePhotoPreferences(Context context){
+    PhotoPreferences providePhotoPreferences(Context context) {
         return new PhotoPreferences(context);
     }
 }

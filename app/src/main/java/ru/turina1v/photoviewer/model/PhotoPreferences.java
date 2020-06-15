@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class PhotoPreferences {
     private final String PREFERENCES_USER = "preferences_user";
 
@@ -18,7 +19,6 @@ public class PhotoPreferences {
     public static final String ORIENTATION_ALL = "all";
 
     private final String PREFERENCES_CATEGORY = "preferences_category";
-    public static final String CATEGORY_ALL = "all";
     private final String PREFERENCES_CATEGORY_INDEX = "preferences_category_index";
 
     public static final String COLOR_RED = "red";
@@ -40,7 +40,7 @@ public class PhotoPreferences {
             COLOR_PINK, COLOR_WHITE, COLOR_GRAY, COLOR_BLACK, COLOR_BROWN, COLOR_TRANSPARENT, COLOR_GRAYSCALE};
 
     private final String PREFERENCES_EDITORS_CHOICE = "preferences_editors_choice";
-    public static final String PREFERENCES_ORDER = "preferences_order";
+    private static final String PREFERENCES_ORDER = "preferences_order";
     public static final String ORDER_POPULAR = "popular";
     public static final String ORDER_LATEST = "latest";
 
@@ -74,6 +74,12 @@ public class PhotoPreferences {
         editor.apply();
     }
 
+    public void clearOrientation() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(PREFERENCES_ORIENTATION);
+        editor.apply();
+    }
+
     public String getOrientation() {
         return preferences.getString(PREFERENCES_ORIENTATION, null);
     }
@@ -81,6 +87,12 @@ public class PhotoPreferences {
     public void saveCategory(String category) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREFERENCES_CATEGORY, category);
+        editor.apply();
+    }
+
+    public void clearCategory() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(PREFERENCES_CATEGORY);
         editor.apply();
     }
 
@@ -194,7 +206,7 @@ public class PhotoPreferences {
         editor.apply();
     }
 
-    public void clearAllColors() {
+    private void clearAllColors() {
         SharedPreferences.Editor editor = preferences.edit();
         for (String color : colors) {
             editor.remove(color);
@@ -215,7 +227,7 @@ public class PhotoPreferences {
         clearAllColors();
     }
 
-    public PreferencesState getPreferenceState(){
+    public PreferencesState getPreferenceState() {
         return new PreferencesState(this);
     }
 

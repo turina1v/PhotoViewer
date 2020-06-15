@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Все категории",
+    "query": "all"
+  },
+  {
+    "name": "Архитектура/Здания",
+    "query": "buildings"
+  },
+  {
+    "name": "Бизнес/финансы",
+    "query": "business"
+  },
+  {
+    "name": "Еда/напитки",
+    "query": "food"
+  },
+  {
+    "name": "Животные",
+    "query": "animals"
+  },
+  {
+    "name": "Здоровье/медицина",
+    "query": "health"
+  },
+  {
+    "name": "Компьютеры/связь",
+    "query": "computer"
+  },
+  {
+    "name": "Красота/мода",
+    "query": "fashion"
+  },
+  {
+    "name": "Люди",
+    "query": "people"
+  },
+  {
+    "name": "Монументы/памятники",
+    "query": "places"
+  },
+  {
+    "name": "Музыка",
+    "query": "music"
+  },
+  {
+    "name": "Наука/технологии",
+    "query": "science"
+  },
+  {
+    "name": "Образование",
+    "query": "education"
+  },
+  {
+    "name": "Природа/пейзажи",
+    "query": "nature"
+  },
+  {
+    "name": "Промышленность",
+    "query": "industry"
+  },
+  {
+    "name": "Путешествия/отпуск",
+    "query": "travel"
+  },
+  {
+    "name": "Религия",
+    "query": "religion"
+  },
+  {
+    "name": "Спорт",
+    "query": "sports"
+  },
+  {
+    "name": "Транспорт/перевозки",
+    "query": "transportation"
+  },
+  {
+    "name": "Фон/рельефы",
+    "query": "backgrounds"
+  },
+  {
+    "name": "Чувства",
+    "query": "feelings"
+  }
+]
