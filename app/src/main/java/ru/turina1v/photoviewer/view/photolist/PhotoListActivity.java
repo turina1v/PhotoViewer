@@ -3,6 +3,7 @@ package ru.turina1v.photoviewer.view.photolist;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -239,6 +240,13 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     @Override
     public void onPhotoClick(Hit photo) {
         openDetailPhoto(photo);
+    }
+
+    @Override
+    public void onCommercialClick(String url) {
+        Uri uri = Uri.parse(url);
+        Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(browser);
     }
 
     @Override

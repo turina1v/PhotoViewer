@@ -13,6 +13,7 @@ import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.turina1v.photoviewer.App;
 import ru.turina1v.photoviewer.R;
+import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.model.retrofit.PhotoLoader;
 import ru.turina1v.photoviewer.view.photolist.PhotoListView;
 
@@ -24,6 +25,8 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
     PhotoLoader loader;
     private CompositeDisposable subscriptions;
 
+    private Hit commercialHit;
+
     private int page = 1;
     private boolean isLoading = false;
     private boolean isEndReached = false;
@@ -31,6 +34,7 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
     public PhotoListPresenter() {
         App.getComponent().inject(this);
         subscriptions = new CompositeDisposable();
+        commercialHit = new Hit();
     }
 
     public void downloadPhotoList(String query, String orientation, String category, String colorQuery,

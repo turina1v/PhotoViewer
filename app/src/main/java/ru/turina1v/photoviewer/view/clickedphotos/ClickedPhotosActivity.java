@@ -150,6 +150,11 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
         openDetailPhoto(photo);
     }
 
+    @Override
+    public void onCommercialClick(String url) {
+
+    }
+
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

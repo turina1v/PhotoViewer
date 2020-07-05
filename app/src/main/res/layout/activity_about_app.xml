@@ -28,10 +28,11 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ImageView
+            android:id="@+id/pixabay_logo"
             android:layout_width="match_parent"
             android:layout_height="185dp"
             android:layout_margin="@dimen/settings_side_margin"
-            android:src="@drawable/logo_pixabay"
+            android:src="@drawable/pixabay_logo"
             android:contentDescription="@string/pixabay_logo"/>
 
         <TextView
