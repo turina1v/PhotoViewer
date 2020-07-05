@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Photo Viewer</string>
+    <string name="app_name">O-boi</string>
     <string name="photo_content_description">Photo</string>
     <string name="settings_orientation">Ориентация</string>
     <string name="settings_orientation_vertical">Вертикальная</string>
@@ -38,7 +38,7 @@
     <string name="load_info_network_error_short">Ошибка подключения к сети</string>
     <string name="load_info_no_clicked_photos">Здесь будут отображены просмотренные изображения.\n*Ссылки на фото хранятся 24 часа</string>
     <string name="share_type">text/plain</string>
-    <string name="share_subject">Обои для телефона</string>
+    <string name="share_subject">Обои для телефона из приложения O-boi</string>
     <string name="share_title">Поделиться</string>
     <string name="pixabay_logo">Pixabay logo</string>
     <string name="toolbar_crop_image">Crop image</string>

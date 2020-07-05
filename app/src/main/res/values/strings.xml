@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Photo Viewer</string>
+    <string name="app_name">O-boi</string>
     <string name="photo_content_description">Photo</string>
     <string name="settings_orientation">Orientation</string>
     <string name="settings_orientation_vertical">Vertical</string>
@@ -36,7 +36,7 @@
     <string name="load_info_server_error">Server connection error.\nPlease, try again later.</string>
     <string name="load_info_network_error_short">Network connection error</string>
     <string name="load_info_no_clicked_photos">Last viewed photos will be displayed here.\n*Links to photos are stored for 24 hours</string>
-    <string name="share_subject">Wallpaper for cellphones</string>
+    <string name="share_subject">Wallpaper for cellphones from O-boi app</string>
     <string name="share_type">text/plain</string>
     <string name="share_title">Share</string>
     <string name="pixabay_logo">Pixabay logo</string>
