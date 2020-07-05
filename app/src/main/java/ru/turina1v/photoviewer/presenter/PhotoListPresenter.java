@@ -35,6 +35,7 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
         App.getComponent().inject(this);
         subscriptions = new CompositeDisposable();
         commercialHit = new Hit();
+        commercialHit.setCommercial(true);
     }
 
     public void downloadPhotoList(String query, String orientation, String category, String colorQuery,

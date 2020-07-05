@@ -47,7 +47,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.Imag
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        if (position == 0) {
+        if (photos.get(position).isCommercial()) {
             holder.imageView.setImageResource(R.drawable.pixabay_logo);
             String url = "https://pixabay.com/";
             holder.imageView.setOnClickListener(v -> listener.onCommercialClick(url));

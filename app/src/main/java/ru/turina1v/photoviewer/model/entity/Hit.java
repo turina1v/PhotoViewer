@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
@@ -29,6 +30,9 @@ public class Hit implements Parcelable, Comparable<Hit> {
     private long clickTimestamp;
     @Expose
     private long expireTimestamp;
+    @Expose
+    @Ignore
+    private boolean isCommercial = false;
 
     public Hit() {
     }
@@ -40,6 +44,7 @@ public class Hit implements Parcelable, Comparable<Hit> {
         largeImageUrl = in.readString();
         clickTimestamp = in.readLong();
         expireTimestamp = in.readLong();
+        isCommercial = in.readByte() == 1;
     }
 
     public static final Creator<Hit> CREATOR = new Creator<Hit>() {
@@ -102,6 +107,14 @@ public class Hit implements Parcelable, Comparable<Hit> {
         this.expireTimestamp = expireTimestamp;
     }
 
+    public boolean isCommercial() {
+        return isCommercial;
+    }
+
+    public void setCommercial(boolean commercial) {
+        isCommercial = commercial;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -115,6 +128,7 @@ public class Hit implements Parcelable, Comparable<Hit> {
         dest.writeString(largeImageUrl);
         dest.writeLong(clickTimestamp);
         dest.writeLong(expireTimestamp);
+        dest.writeByte((byte) (isCommercial? 1 : 0));
     }
 
     @Override

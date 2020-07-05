@@ -153,9 +153,7 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
 
     @Override
     public void onCommercialClick(String url) {
-        Uri uri = Uri.parse(url);
-        Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(browser);
+
     }
 
     private void initToolbar() {
