@@ -2,6 +2,7 @@ package ru.turina1v.photoviewer.view.clickedphotos;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -152,7 +153,9 @@ public class ClickedPhotosActivity extends MvpAppCompatActivity implements Click
 
     @Override
     public void onCommercialClick(String url) {
-
+        Uri uri = Uri.parse(url);
+        Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(browser);
     }
 
     private void initToolbar() {

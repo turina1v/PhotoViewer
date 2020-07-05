@@ -35,11 +35,13 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
     private final PhotoDao photoDao;
     private List<Hit> expiredPhotos = new ArrayList<>();
     private CompositeDisposable subscriptions;
+    private Hit commercialHit;
 
     public ClickedPhotosPresenter() {
         App.getComponent().inject(this);
         photoDao = database.photoDao();
         subscriptions = new CompositeDisposable();
+        commercialHit = new Hit();
     }
 
     public void getPhotosFromDB() {
@@ -51,6 +53,7 @@ public class ClickedPhotosPresenter extends MvpPresenter<ClickedPhotosView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         photos -> {
+                            photos.add(0, commercialHit);
                             getViewState().updatePhotoRecycler(photos);
                             clearExpiredPhotos(expiredPhotos);
                         },

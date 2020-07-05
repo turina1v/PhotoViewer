@@ -45,7 +45,10 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        photoList -> getViewState().updatePhotoRecycler(photoList.getHits()),
+                        photoList -> {
+                            photoList.getHits().add(0, commercialHit);
+                            getViewState().updatePhotoRecycler(photoList.getHits());
+                        },
                         throwable -> {
                             if (throwable instanceof IOException) {
                                 getViewState().showErrorScreen(R.string.load_info_network_error);
