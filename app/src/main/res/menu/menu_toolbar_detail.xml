@@ -17,11 +17,17 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/menu_reset"
-        android:icon="@drawable/ic_reset"
+        android:id="@+id/menu_reset_blocked"
+        android:icon="@drawable/ic_reset_blocked"
         android:title="@string/menu_reset"
         android:visible="false"
+        app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_reset_enabled"
+        android:icon="@drawable/ic_reset_enabled"
+        android:title="@string/menu_reset"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
     <item

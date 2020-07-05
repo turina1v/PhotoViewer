@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -122,18 +121,21 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         if (isEditMode) {
             menu.findItem(R.id.menu_edit).setVisible(false);
             menu.findItem(R.id.menu_share).setVisible(false);
-            menu.findItem(R.id.menu_reset).setVisible(true);
             if (isImageEdited) {
                 menu.findItem(R.id.menu_apply_blocked).setVisible(false);
                 menu.findItem(R.id.menu_apply_enabled).setVisible(true);
+                menu.findItem(R.id.menu_reset_blocked).setVisible(false);
+                menu.findItem(R.id.menu_reset_enabled).setVisible(true);
             } else {
                 menu.findItem(R.id.menu_apply_blocked).setVisible(true);
                 menu.findItem(R.id.menu_apply_enabled).setVisible(false);
+                menu.findItem(R.id.menu_reset_blocked).setVisible(true);
+                menu.findItem(R.id.menu_reset_enabled).setVisible(false);
             }
         } else {
             menu.findItem(R.id.menu_edit).setVisible(true);
             menu.findItem(R.id.menu_share).setVisible(true);
-            menu.findItem(R.id.menu_reset).setVisible(false);
+            menu.findItem(R.id.menu_reset_enabled).setVisible(false);
             menu.findItem(R.id.menu_apply_enabled).setVisible(false);
             menu.findItem(R.id.menu_apply_blocked).setVisible(false);
         }
@@ -163,7 +165,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
                 isImageEdited = false;
                 isShowResultLayout = true;
                 break;
-            case R.id.menu_reset:
+            case R.id.menu_reset_enabled:
                 isMissCropWindowListener = true;
                 cropImageView.setImageBitmap(initialBitmap);
                 currentBitmap = initialBitmap;
