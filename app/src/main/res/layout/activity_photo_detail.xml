@@ -104,27 +104,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!--<LinearLayout
-                    android:id="@+id/control_buttons_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/button_save"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/save_to_gallery" />
-
-                    <Button
-                        android:id="@+id/button_set_wallpaper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:text="@string/set_wallpaper" />
-                </LinearLayout>-->
-
                 <LinearLayout
                     android:id="@+id/control_crop_layout"
                     android:visibility="invisible"

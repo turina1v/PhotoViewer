@@ -85,7 +85,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     private Bitmap currentBitmap;
     private boolean isShowResultLayout = true;
     private boolean isResultButtonPressed = false;
-    private boolean isMissCropWindowListener = false;
+    private boolean isMissCropWindowListener = true;
     private boolean isEditMode = false;
     private boolean isImageEdited = false;
 
@@ -109,6 +109,9 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
             presenter.showDetailPhoto(photo.getLargeImageUrl());
             presenter.savePhotoToDb(photo, isSetExpired);
         }
+        controlButtonsLayout.setVisibility(View.VISIBLE);
+        cropLayout.setVisibility(View.INVISIBLE);
+        resultLayout.setVisibility(View.INVISIBLE);
         App.getAnalytics().logEvent(AnalyticsUtils.EVENT_OPEN_DETAIL_IMAGE);
     }
 
