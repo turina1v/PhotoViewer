@@ -46,4 +46,6 @@
     <string name="menu_reset">Reset</string>
     <string name="menu_apply">Apply</string>
     <string name="exit">Пожалуйста, нажмите «НАЗАД» еще раз, чтобы выйти</string>
+    <string name="crop_screen_size">Размер экрана</string>
+    <string name="crop_free_size">Произвольный размер</string>
 </resources>

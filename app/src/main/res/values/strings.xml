@@ -45,4 +45,6 @@
     <string name="menu_reset">Reset</string>
     <string name="menu_apply">Apply</string>
     <string name="exit">Please click BACK again to exit</string>
+    <string name="crop_screen_size">screen size</string>
+    <string name="crop_free_size">free size</string>
 </resources>
