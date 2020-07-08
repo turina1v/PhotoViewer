@@ -35,6 +35,7 @@ import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 import ru.turina1v.photoviewer.App;
 import ru.turina1v.photoviewer.R;
+import ru.turina1v.photoviewer.model.AnalyticsUtils;
 import ru.turina1v.photoviewer.model.PhotoPreferences;
 import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.presenter.PhotoListPresenter;
@@ -246,6 +247,7 @@ public class PhotoListActivity extends MvpAppCompatActivity implements PhotoList
     public void onCommercialClick(String url) {
         Uri uri = Uri.parse(url);
         Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+        App.getAnalytics().logEvent(AnalyticsUtils.EVENT_CLICK_PIXABAY_LINK_MAIN);
         startActivity(browser);
     }
 

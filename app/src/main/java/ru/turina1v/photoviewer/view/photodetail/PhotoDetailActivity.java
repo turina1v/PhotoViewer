@@ -40,7 +40,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
+import ru.turina1v.photoviewer.App;
 import ru.turina1v.photoviewer.R;
+import ru.turina1v.photoviewer.model.AnalyticsUtils;
 import ru.turina1v.photoviewer.model.ImageLoader;
 import ru.turina1v.photoviewer.model.entity.Hit;
 import ru.turina1v.photoviewer.presenter.PhotoDetailPresenter;
@@ -107,6 +109,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
             presenter.showDetailPhoto(photo.getLargeImageUrl());
             presenter.savePhotoToDb(photo, isSetExpired);
         }
+        App.getAnalytics().logEvent(AnalyticsUtils.EVENT_OPEN_DETAIL_IMAGE);
     }
 
     @Override
@@ -151,6 +154,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
                 intent.setType(getString(R.string.share_type));
                 intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
                 intent.putExtra(Intent.EXTRA_TEXT, photo.getLargeImageUrl());
+                App.getAnalytics().logEvent(AnalyticsUtils.EVENT_SHARE_IMAGE);
                 startActivity(Intent.createChooser(intent, getString(R.string.share_title)));
                 break;
             case R.id.menu_edit:
@@ -164,6 +168,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
                 isResultButtonPressed = false;
                 isImageEdited = false;
                 isShowResultLayout = true;
+                App.getAnalytics().logEvent(AnalyticsUtils.EVENT_START_EDITING_IMAGE);
                 break;
             case R.id.menu_reset_enabled:
                 isMissCropWindowListener = true;
@@ -185,6 +190,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
                 initialBitmap = currentBitmap;
                 invalidateOptionsMenu();
                 resultLayout.setVisibility(View.INVISIBLE);
+                App.getAnalytics().logEvent(AnalyticsUtils.EVENT_IMAGE_APPLY_CHANGES);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -252,7 +258,10 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        bitmap -> Toast.makeText(this, R.string.toast_saved_to_gallery, Toast.LENGTH_LONG).show(),
+                        bitmap -> {
+                            Toast.makeText(this, R.string.toast_saved_to_gallery, Toast.LENGTH_LONG).show();
+                            App.getAnalytics().logEvent(AnalyticsUtils.EVENT_DOWNLOAD_IMAGE);
+                            },
                         throwable -> Log.e("", "saveToGallery", throwable)
                 ));
     }
@@ -272,6 +281,7 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
                         bitmap -> {
                             Toast.makeText(this, R.string.toast_wallpaper_set, Toast.LENGTH_LONG).show();
                             progressBar.dismiss();
+                            App.getAnalytics().logEvent(AnalyticsUtils.EVENT_SET_WALLPAPER);
                         },
                         throwable -> {
                             Log.e("", "saveToGallery", throwable);
@@ -364,6 +374,11 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     @Override
     public boolean onSupportNavigateUp() {
         if (isEditMode) {
+            if (isImageEdited){
+                App.getAnalytics().logEvent(AnalyticsUtils.EVENT_CANCEL_EDITING_IMAGE);
+            } else {
+                App.getAnalytics().logEvent(AnalyticsUtils.EVENT_CLOSE_EDITOR_WITHOUT_CHANGES);
+            }
             isEditMode = false;
             isMissCropWindowListener = true;
             cropImageView.setImageBitmap(initialBitmap);
@@ -382,6 +397,11 @@ public class PhotoDetailActivity extends MvpAppCompatActivity implements PhotoDe
     @Override
     public void onBackPressed() {
         if (isEditMode) {
+            if (isImageEdited){
+                App.getAnalytics().logEvent(AnalyticsUtils.EVENT_CANCEL_EDITING_IMAGE);
+            } else {
+                App.getAnalytics().logEvent(AnalyticsUtils.EVENT_CLOSE_EDITOR_WITHOUT_CHANGES);
+            }
             isEditMode = false;
             isMissCropWindowListener = true;
             cropImageView.setImageBitmap(initialBitmap);

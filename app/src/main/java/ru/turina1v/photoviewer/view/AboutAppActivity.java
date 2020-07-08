@@ -12,7 +12,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.turina1v.photoviewer.App;
 import ru.turina1v.photoviewer.R;
+import ru.turina1v.photoviewer.model.AnalyticsUtils;
 import ru.turina1v.photoviewer.view.photolist.OnPhotoClickListener;
 
 public class AboutAppActivity extends AppCompatActivity {
@@ -29,6 +31,7 @@ public class AboutAppActivity extends AppCompatActivity {
             String url = "https://pixabay.com/";
             Uri uri = Uri.parse(url);
             Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+            App.getAnalytics().logEvent(AnalyticsUtils.EVENT_CLICK_PIXABAY_LINK_ABOUT);
             startActivity(browser);
         });
     }
