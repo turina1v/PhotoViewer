@@ -47,7 +47,9 @@ public class PhotoListPresenter extends MvpPresenter<PhotoListView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         photoList -> {
-                            photoList.getHits().add(0, commercialHit);
+                            if (photoList.getHits().size() > 0) {
+                                photoList.getHits().add(0, commercialHit);
+                            }
                             getViewState().updatePhotoRecycler(photoList.getHits());
                         },
                         throwable -> {
