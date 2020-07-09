@@ -13,7 +13,7 @@ import ru.turina1v.photoviewer.model.entity.PhotoList;
 @SuppressWarnings("FieldCanBeLocal")
 public class PhotoLoader {
     private final String baseUrl = "https://pixabay.com";
-    private final String apiKey = "16316299-ba7e12baf00b76dee8fff44c9";
+    private final String apiKey = "your_api_key";
     private final String imageType = "photo";
     private final String perPage = "200";
     private PhotoApi api;
